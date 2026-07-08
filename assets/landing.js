@@ -5,7 +5,7 @@ function renderCategories() {
   const grid = document.getElementById("catGrid");
   grid.innerHTML = CATEGORIES.map((cat) => `
     <button class="cat-card glass ${activeCategory === cat.name ? "active" : ""}" data-cat="${cat.name}">
-      <div class="cat-image" style="background:${stripe(cat.hue)}"><span class="ig-label">${cat.name}</span></div>
+      <div class="cat-image">${mediaFill(cat.image, cat.hue, cat.name)}</div>
       <div class="cat-name">${cat.name}</div>
     </button>
   `).join("");
@@ -27,7 +27,7 @@ function renderProducts() {
     const inCart = !!cart[p.id];
     return `
     <div class="product-card glass">
-      <div class="product-photo" style="background:${stripe(p.hue)}"><span class="swatch-label">product photo</span></div>
+      <div class="product-photo">${mediaFill(p.image, p.hue, p.name)}</div>
       <div>
         <div class="product-cat">${p.cat}</div>
         <div class="product-name">${p.name}</div>
@@ -62,12 +62,6 @@ function renderTestimonials() {
   `).join("");
 }
 
-function renderInstagram() {
-  document.getElementById("igGrid").innerHTML = IG_HUES.map((hue) => `
-    <div class="ig-tile" style="background:${stripe(hue)}"><span class="ig-label">@loftystore</span></div>
-  `).join("");
-}
-
 function renderCartDrawer() {
   const lines = cartLines();
   const badge = document.getElementById("cartBadge");
@@ -84,7 +78,7 @@ function renderCartDrawer() {
     <div style="display:flex; flex-direction:column; gap:14px;">
       ${lines.map((line) => `
         <div class="cart-line">
-          <div class="cart-line-swatch" style="background:${stripe(line.product.hue)}"></div>
+          <div class="cart-line-swatch">${mediaFill(line.product.image, line.product.hue, "")}</div>
           <div style="flex:1;">
             <div class="cart-line-name">${line.product.name}</div>
             <div class="cart-line-meta">Qty ${line.qty} · ${money(line.subtotal)}</div>
@@ -125,8 +119,30 @@ mobileMenu.addEventListener("click", () => mobileMenu.classList.remove("open"));
 document.addEventListener("cart:change", renderCartDrawer);
 document.addEventListener("cart:change", renderProducts);
 
+// Nav links: "Shop" clears the filter and jumps to products; each category
+// name filters the product grid to that category and jumps there too.
+function goToShop(categoryName) {
+  activeCategory = categoryName || null;
+  renderCategories();
+  renderProducts();
+  mobileMenu.classList.remove("open");
+  document.getElementById(categoryName ? "products" : "shop").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.querySelectorAll("[data-nav]").forEach((el) => {
+  el.style.cursor = "pointer";
+  el.addEventListener("click", () => {
+    const name = el.dataset.nav;
+    goToShop(name === "Shop" ? null : name);
+  });
+});
+
+document.getElementById("shopNowBtn").addEventListener("click", () => goToShop(null));
+document.getElementById("ourStoryBtn").addEventListener("click", () => {
+  document.getElementById("story").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
 renderCategories();
 renderProducts();
 renderTestimonials();
-renderInstagram();
 renderCartDrawer();
