@@ -67,7 +67,7 @@ if (!order) {
 
     <div class="confirm-actions">
       <a href="index.html" class="pill pill-primary">Continue shopping</a>
-      <span class="pill pill-secondary">View order status</span>
+      <a href="order-status.html" class="pill pill-secondary">View order status</a>
     </div>
   `;
 }
