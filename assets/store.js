@@ -13,7 +13,7 @@ const PRODUCTS = [
   { id: "magflow-charger", name: "MagFlow Charger", cat: "Charging", price: 10850, hue: 250, image: "assets/img/category-charging.jpg" },
   { id: "armorglass-pro", name: "ArmorGlass Pro", cat: "Protection", price: 5300, hue: 320, image: "assets/img/category-protection.png" },
   { id: "drivemount-x", name: "DriveMount X", cat: "Car & Travel", price: 8050, hue: 150, image: "assets/img/category-car.jpg" },
-  { id: "powercell-10k", name: "PowerCell 10K", cat: "Charging", price: 12500, hue: 260, image: null },
+  { id: "powercell-10k", name: "PowerCell 10K", cat: "Charging", price: 12500, hue: 260, image: "assets/img/product-powercell.jpg" },
   { id: "braidlink-cable", name: "BraidLink Cable", cat: "Charging", price: 4450, hue: 200, image: "assets/img/product-cable.jpg" },
 ];
 
