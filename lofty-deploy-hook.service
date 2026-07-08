@@ -1,0 +1,15 @@
+[Unit]
+Description=Lofty Store deploy webhook listener
+After=network.target
+
+[Service]
+Type=simple
+Environment=WEBHOOK_SECRET=CHANGE_ME_TO_A_RANDOM_SECRET
+Environment=DEPLOY_HOOK_PORT=7777
+Environment=DEPLOY_SCRIPT=/var/www/lofty-store/deploy.sh
+ExecStart=/usr/bin/node /var/www/lofty-store/webhook-listener.js
+Restart=on-failure
+User=www-data
+
+[Install]
+WantedBy=multi-user.target
