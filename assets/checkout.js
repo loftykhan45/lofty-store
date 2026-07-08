@@ -12,7 +12,7 @@ function renderSummary() {
 
   document.getElementById("summaryLines").innerHTML = lines.map((l) => `
     <div class="summary-line">
-      <div class="summary-line-swatch" style="background:${stripe(l.product.hue)}"></div>
+      <div class="summary-line-swatch">${mediaFill(l.product.image, l.product.hue, "")}</div>
       <div style="flex:1;">
         <div class="cart-line-name">${l.product.name}</div>
         <div class="cart-line-meta">Qty ${l.qty}</div>
@@ -94,7 +94,7 @@ form.addEventListener("submit", (e) => {
     city: form.elements.city.value,
     state: form.elements.state.value,
     zip: form.elements.zip.value,
-    lines: lines.map((l) => ({ id: l.product.id, name: l.product.name, hue: l.product.hue, qty: l.qty, subtotal: l.subtotal })),
+    lines: lines.map((l) => ({ id: l.product.id, name: l.product.name, hue: l.product.hue, image: l.product.image, qty: l.qty, subtotal: l.subtotal })),
     subtotal: totals.subtotal,
     shipping: totals.shippingCost,
     total: totals.total,
