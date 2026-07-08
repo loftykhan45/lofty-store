@@ -62,7 +62,7 @@ if (!order) {
 
     <div class="detail-card glass">
       <div class="detail-card-title">Shipping to</div>
-      <div class="ship-to-text">${order.firstName} ${order.lastName}<br>${order.address}<br>${order.city}, ${order.state} ${order.zip}</div>
+      <div class="ship-to-text">${order.firstName} ${order.lastName}<br>${order.address}<br>${order.city}</div>
     </div>
 
     <div class="confirm-actions">
