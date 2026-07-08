@@ -39,7 +39,7 @@ if (!order) {
       <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:20px;">
         ${order.lines.map((l) => `
           <div class="summary-line">
-            <div class="summary-line-swatch" style="background:${stripe(l.hue)}"></div>
+            <div class="summary-line-swatch">${mediaFill(l.image, l.hue, "")}</div>
             <div style="flex:1;">
               <div class="cart-line-name">${l.name}</div>
               <div class="cart-line-meta">Qty ${l.qty}</div>
