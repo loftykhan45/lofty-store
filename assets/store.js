@@ -3,7 +3,7 @@ const CART_KEY = "lofty_cart";
 const ORDER_KEY = "lofty_last_order";
 
 function stripe(hue) {
-  return `repeating-linear-gradient(115deg, hsl(${hue} 45% 22%), hsl(${hue} 45% 22%) 10px, hsl(${hue} 45% 27%) 10px, hsl(${hue} 45% 27%) 20px)`;
+  return `linear-gradient(135deg, hsl(${hue} 55% 32%) 0%, hsl(${hue} 45% 16%) 100%)`;
 }
 
 // Prices in PKR, converted from the original USD design at ~278 PKR/USD (Jul 2026 rate), rounded to nearest 50.
