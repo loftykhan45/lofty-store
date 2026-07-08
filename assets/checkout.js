@@ -97,6 +97,7 @@ form.addEventListener("submit", (e) => {
     shipping: totals.shippingCost,
     total: totals.total,
     orderNumber: "#LS-" + Math.floor(10000 + Math.random() * 89999),
+    placedAt: Date.now(),
   });
   clearCart();
   window.location.href = "confirmation.html";
