@@ -279,6 +279,26 @@ footer.site-footer { padding: 32px 28px 40px; color: rgba(255, 255, 255, 0.35); 
 .pay-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .secure-note { color: rgba(255, 255, 255, 0.35); font-size: 12px; text-align: center; }
 
+/* order status timeline */
+.status-timeline { display: flex; flex-direction: column; }
+.status-step { display: flex; gap: 16px; position: relative; padding-bottom: 30px; }
+.status-step:last-child { padding-bottom: 0; }
+.status-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-size: 13px; font-weight: 700; z-index: 1;
+  background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.2); color: rgba(255, 255, 255, 0.4);
+}
+.status-step.done .status-dot { background: linear-gradient(135deg, oklch(0.75 0.17 155), oklch(0.65 0.17 165)); border-color: transparent; color: #08140c; }
+.status-step.current .status-dot { border-color: #fff; color: #fff; background: rgba(255, 255, 255, 0.14); }
+.status-line { position: absolute; left: 13px; top: 30px; bottom: 0; width: 2px; background: rgba(255, 255, 255, 0.14); }
+.status-step.done .status-line { background: oklch(0.65 0.17 165); }
+.status-body { padding-top: 3px; }
+.status-title { color: rgba(255, 255, 255, 0.45); font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.status-step.done .status-title, .status-step.current .status-title { color: #fff; }
+.status-desc { color: rgba(255, 255, 255, 0.5); font-size: 13px; line-height: 1.5; }
+.status-time { color: rgba(255, 255, 255, 0.35); font-size: 12px; margin-top: 3px; }
+
 /* confirmation */
 .confirm-wrap { max-width: 760px; margin: 0 auto; padding: 36px 28px 80px; }
 .confirm-card { padding: 44px; border-radius: 28px; text-align: center; margin-bottom: 24px; }
