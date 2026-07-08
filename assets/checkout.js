@@ -62,7 +62,7 @@ function validateForm(form) {
   toggleFieldError(email, emailValid);
   if (!emailValid) valid = false;
 
-  ["firstName", "lastName", "address", "city", "state", "zip"].forEach((name) => {
+  ["firstName", "lastName", "address", "city"].forEach((name) => {
     const field = form.elements[name];
     const ok = field.value.trim().length > 0;
     toggleFieldError(field, ok);
@@ -92,8 +92,6 @@ form.addEventListener("submit", (e) => {
     lastName: form.elements.lastName.value,
     address: form.elements.address.value,
     city: form.elements.city.value,
-    state: form.elements.state.value,
-    zip: form.elements.zip.value,
     lines: lines.map((l) => ({ id: l.product.id, name: l.product.name, hue: l.product.hue, image: l.product.image, qty: l.qty, subtotal: l.subtotal })),
     subtotal: totals.subtotal,
     shipping: totals.shippingCost,
