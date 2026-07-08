@@ -15,7 +15,7 @@
   <nav class="nav glass">
     <a href="index.html" class="nav-brand">Lofty Store</a>
     <ul class="nav-links">
-      <li>Shop</li><li>Cases</li><li>Charging</li><li>Protection</li><li>Car &amp; Travel</li>
+      <li data-nav="Shop">Shop</li><li data-nav="Cases">Cases</li><li data-nav="Charging">Charging</li><li data-nav="Protection">Protection</li><li data-nav="Car & Travel">Car &amp; Travel</li>
     </ul>
     <div class="nav-right">
       <button class="pill pill-primary cart-btn" id="cartToggle" aria-label="Open cart">
@@ -27,7 +27,7 @@
   </nav>
 
   <ul class="mobile-menu" id="mobileMenu">
-    <li>Shop</li><li>Cases</li><li>Charging</li><li>Protection</li><li>Car &amp; Travel</li>
+    <li data-nav="Shop">Shop</li><li data-nav="Cases">Cases</li><li data-nav="Charging">Charging</li><li data-nav="Protection">Protection</li><li data-nav="Car & Travel">Car &amp; Travel</li>
   </ul>
 
   <div class="cart-overlay" id="cartOverlay"></div>
@@ -46,22 +46,22 @@
         <h1 class="hero-title">Every day carry, elevated.</h1>
         <p class="hero-body">Cases, chargers, screen protection and car mounts — one clean aesthetic across your whole setup.</p>
         <div class="hero-actions">
-          <span class="pill pill-primary">Shop Now</span>
-          <span class="pill pill-secondary">Our Story</span>
+          <button class="pill pill-primary" id="shopNowBtn">Shop Now</button>
+          <button class="pill pill-secondary" id="ourStoryBtn">Our Story</button>
         </div>
       </div>
-      <div class="hero-image" style="background: linear-gradient(135deg, hsl(245 55% 32%) 0%, hsl(245 45% 16%) 100%);">
-        <span class="swatch-label">hero product shot</span>
+      <div class="hero-image">
+        <img src="assets/img/hero.jpg" alt="Lofty Store mobile accessories" loading="eager" decoding="async" style="width:100%; height:100%; object-fit:cover;">
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="shop">
     <h2 class="section-title">Shop by category</h2>
     <div class="cat-grid" id="catGrid"></div>
   </section>
 
-  <section class="section">
+  <section class="section" id="products">
     <div class="section-header">
       <h2 class="section-title">Featured products</h2>
       <button class="section-link" id="filterLabel">View all →</button>
@@ -69,14 +69,9 @@
     <div class="product-grid" id="productGrid"></div>
   </section>
 
-  <section class="section">
+  <section class="section" id="story">
     <h2 class="section-title">What customers say</h2>
     <div class="testimonial-grid" id="testimonialGrid"></div>
-  </section>
-
-  <section class="section">
-    <h2 class="section-title">Follow @loftystore</h2>
-    <div class="ig-grid" id="igGrid"></div>
   </section>
 
   <footer class="site-footer">© 2026 Lofty Store — mobile accessories, done right.</footer>
