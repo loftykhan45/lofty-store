@@ -42,3 +42,22 @@ export function findProduct(id: string): Product | undefined {
 export function money(n: number): string {
   return "Rs " + n.toFixed(n % 1 === 0 ? 0 : 2);
 }
+
+// WhatsApp ordering — number in E.164 without the leading "+" (wa.me format).
+export const WHATSAPP_NUMBER = "923236526569";
+
+export function whatsappLink(message: string): string {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+export function whatsappProductLink(product: Product, qty: number = 1): string {
+  const message = `Hi Lofty Store! I'd like to order:\n${qty} x ${product.name} — ${money(product.price * qty)}`;
+  return whatsappLink(message);
+}
+
+export const ANNOUNCEMENTS = [
+  "Cash on Delivery available",
+  "Fast delivery all over Pakistan",
+  "Genuine accessories, always",
+  "7-day easy replacement",
+];
