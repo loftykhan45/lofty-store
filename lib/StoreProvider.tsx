@@ -46,14 +46,21 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     if (hydrated) localStorage.setItem(CART_KEY, JSON.stringify(cart));
   }, [cart, hydrated]);
 
-  const addToCart = (id: string) => setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 }));
+  // Adding or increasing a quantity opens the cart drawer, so it slides in
+  // on the right immediately (matching the reference UX) rather than
+  // requiring a separate click on the nav's Cart button.
+  const addToCart = (id: string) => {
+    setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 }));
+    setCartOpen(true);
+  };
   const removeFromCart = (id: string) =>
     setCart((c) => {
       const next = { ...c };
       delete next[id];
       return next;
     });
-  const setQty = (id: string, qty: number) =>
+  const setQty = (id: string, qty: number) => {
+    if (qty > (cart[id] || 0)) setCartOpen(true);
     setCart((c) => {
       if (qty <= 0) {
         const next = { ...c };
@@ -62,6 +69,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       }
       return { ...c, [id]: qty };
     });
+  };
   const clearCart = () => setCart({});
 
   const cartCount = Object.values(cart).reduce((a, b) => a + b, 0);
