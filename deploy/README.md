@@ -30,6 +30,11 @@ sudo apt-get update && sudo apt-get install -y build-essential python3
 npm ci
 ```
 
+Before starting the app, edit `deploy/ecosystem.config.js` and change
+`ADMIN_PASSWORD` (and `ADMIN_USER` if you like) to a real credential — this
+protects the `/admin` orders portal via HTTP Basic Auth. The placeholder
+value is committed in this public repo, so it is not a secret.
+
 Install PM2 and start the app:
 
 ```bash
@@ -98,3 +103,12 @@ pm2 reload lofty-store-app --update-env
 ```
 
 Check `pm2 logs lofty-store-app` if the app won't start after a deploy.
+
+## Admin orders portal
+
+`https://lofty.24-144-105-14.sslip.io/admin` lists every order and lets you
+mark them Confirmed → Shipped → Delivered (or Cancelled). It's protected by
+HTTP Basic Auth using the `ADMIN_USER`/`ADMIN_PASSWORD` env vars set in
+`deploy/ecosystem.config.js` — the browser will prompt for credentials on
+first visit. If you change the password, run `pm2 reload lofty-store-app
+--update-env` (or restart) to pick it up.
