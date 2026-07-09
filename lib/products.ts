@@ -9,12 +9,53 @@ export type Product = {
 // Prices in PKR, set to realistic Pakistani retail market rates for these
 // product categories (not a currency conversion of a placeholder USD price).
 export const PRODUCTS: Product[] = [
-  { id: "aerocase-clear", name: "AeroCase Clear", cat: "Case", price: 450, image: "/img/category-cases.jpg" },
+  { id: "aerocase-clear", name: "AeroCase Clear", cat: "Cases", price: 450, image: "/img/category-cases.jpg" },
   { id: "magflow-charger", name: "MagFlow Charger", cat: "Charging", price: 1800, image: "/img/category-charging.jpg" },
   { id: "armorglass-pro", name: "ArmorGlass Pro", cat: "Protection", price: 250, image: "/img/category-protection.png" },
   { id: "drivemount-x", name: "DriveMount X", cat: "Car & Travel", price: 800, image: "/img/category-car.jpg" },
   { id: "powercell-10k", name: "PowerCell 10K", cat: "Charging", price: 2800, image: "/img/product-powercell.jpg" },
   { id: "braidlink-cable", name: "BraidLink Cable", cat: "Charging", price: 350, image: "/img/product-cable.jpg" },
+  ...(
+    [
+      ["iPhone X", 350],
+      ["iPhone XR", 370],
+      ["iPhone XS", 400],
+      ["iPhone XS Max", 430],
+      ["iPhone 11", 390],
+      ["iPhone 11 Pro", 450],
+      ["iPhone 11 Pro Max", 480],
+      ["iPhone 12 mini", 400],
+      ["iPhone 12", 420],
+      ["iPhone 12 Pro", 480],
+      ["iPhone 12 Pro Max", 510],
+      ["iPhone 13 mini", 430],
+      ["iPhone 13", 450],
+      ["iPhone 13 Pro", 510],
+      ["iPhone 13 Pro Max", 540],
+      ["iPhone 14", 480],
+      ["iPhone 14 Plus", 510],
+      ["iPhone 14 Pro", 540],
+      ["iPhone 14 Pro Max", 570],
+      ["iPhone 15", 520],
+      ["iPhone 15 Plus", 550],
+      ["iPhone 15 Pro", 580],
+      ["iPhone 15 Pro Max", 610],
+      ["iPhone 16", 560],
+      ["iPhone 16 Plus", 590],
+      ["iPhone 16 Pro", 620],
+      ["iPhone 16 Pro Max", 650],
+      ["iPhone 17", 600],
+      ["iPhone 17 Air", 630],
+      ["iPhone 17 Pro", 660],
+      ["iPhone 17 Pro Max", 690],
+    ] as [string, number][]
+  ).map(([model, price]) => ({
+    id: `case-${model.toLowerCase().replace(/\s+/g, "-")}`,
+    name: `${model} Case`,
+    cat: "Cases",
+    price,
+    image: "/img/category-cases.jpg",
+  })),
 ];
 
 export const CATEGORIES = [
