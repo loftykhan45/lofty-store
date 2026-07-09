@@ -6,15 +6,15 @@ function stripe(hue) {
   return `linear-gradient(135deg, hsl(${hue} 55% 32%) 0%, hsl(${hue} 45% 16%) 100%)`;
 }
 
-// Prices in PKR, converted from the original USD design at ~278 PKR/USD (Jul 2026 rate), rounded to nearest 50.
+// Prices in PKR, set to realistic Pakistani retail market rates for generic/unbranded mobile accessories.
 // image: null means no verified real photo was found yet — falls back to a gradient swatch.
 const PRODUCTS = [
-  { id: "aerocase-clear", name: "AeroCase Clear", cat: "Case", price: 6650, hue: 180, image: "assets/img/category-cases.jpg" },
-  { id: "magflow-charger", name: "MagFlow Charger", cat: "Charging", price: 10850, hue: 250, image: "assets/img/category-charging.jpg" },
-  { id: "armorglass-pro", name: "ArmorGlass Pro", cat: "Protection", price: 5300, hue: 320, image: "assets/img/category-protection.png" },
-  { id: "drivemount-x", name: "DriveMount X", cat: "Car & Travel", price: 8050, hue: 150, image: "assets/img/category-car.jpg" },
-  { id: "powercell-10k", name: "PowerCell 10K", cat: "Charging", price: 12500, hue: 260, image: "assets/img/product-powercell.jpg" },
-  { id: "braidlink-cable", name: "BraidLink Cable", cat: "Charging", price: 4450, hue: 200, image: "assets/img/product-cable.jpg" },
+  { id: "aerocase-clear", name: "AeroCase Clear", cat: "Case", price: 450, hue: 180, image: "assets/img/category-cases.jpg" },
+  { id: "magflow-charger", name: "MagFlow Charger", cat: "Charging", price: 1800, hue: 250, image: "assets/img/category-charging.jpg" },
+  { id: "armorglass-pro", name: "ArmorGlass Pro", cat: "Protection", price: 250, hue: 320, image: "assets/img/category-protection.png" },
+  { id: "drivemount-x", name: "DriveMount X", cat: "Car & Travel", price: 800, hue: 150, image: "assets/img/category-car.jpg" },
+  { id: "powercell-10k", name: "PowerCell 10K", cat: "Charging", price: 2800, hue: 260, image: "assets/img/product-powercell.jpg" },
+  { id: "braidlink-cable", name: "BraidLink Cable", cat: "Charging", price: 350, hue: 200, image: "assets/img/product-cable.jpg" },
 ];
 
 const CATEGORIES = [
@@ -31,8 +31,8 @@ const TESTIMONIALS = [
 ];
 
 const SHIPPING_OPTIONS = [
-  { name: "Standard Shipping", eta: "5–7 business days", price: 1400 },
-  { name: "Express Shipping", eta: "2–3 business days", price: 4150 },
+  { name: "Standard Shipping", eta: "5–7 business days", price: 200 },
+  { name: "Express Shipping", eta: "2–3 business days", price: 450 },
 ];
 
 function mediaFill(image, hue, label) {
