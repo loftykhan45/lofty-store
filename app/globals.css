@@ -131,7 +131,7 @@ a { color: inherit; }
 
 /* nav */
 .nav {
-  position: sticky; top: 20px; z-index: 20;
+  position: static; z-index: 20;
   margin: 20px auto; max-width: 1180px;
   padding: 16px 28px;
   display: flex; align-items: center; justify-content: space-between;
