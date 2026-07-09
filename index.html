@@ -11,6 +11,15 @@
 <body>
 <div class="orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
 
+<div class="announce-bar">
+  <div class="announce-track">
+    <span>CASH ON DELIVERY AVAILABLE</span><span class="dot">✦</span>
+    <span>FAST NATIONWIDE SHIPPING</span><span class="dot">✦</span>
+    <span>GENUINE ACCESSORIES</span><span class="dot">✦</span>
+    <span>EASY 7-DAY REPLACEMENT</span><span class="dot">✦</span>
+  </div>
+</div>
+
 <div class="page">
   <nav class="nav glass">
     <a href="index.html" class="nav-brand">Lofty Store</a>
@@ -18,6 +27,9 @@
       <li data-nav="Shop">Shop</li><li data-nav="Cases">Cases</li><li data-nav="Charging">Charging</li><li data-nav="Protection">Protection</li><li data-nav="Car & Travel">Car &amp; Travel</li>
     </ul>
     <div class="nav-right">
+      <a class="whatsapp-btn" href="https://wa.me/923001234567?text=Hi!%20I%27d%20like%20to%20order%20from%20Lofty%20Store." target="_blank" rel="noopener">
+        <span class="whatsapp-icon">☎</span><span>WhatsApp</span>
+      </a>
       <button class="pill pill-primary cart-btn" id="cartToggle" aria-label="Open cart">
         Cart
         <span class="cart-badge hidden" id="cartBadge">0</span>
@@ -56,6 +68,15 @@
     </div>
   </section>
 
+  <section class="section trust-section">
+    <div class="trust-row">
+      <div class="trust-item"><span class="trust-icon">🚚</span><div><div class="trust-title">Fast nationwide delivery</div><div class="trust-desc">Delivered across Pakistan in 3–5 days</div></div></div>
+      <div class="trust-item"><span class="trust-icon">✓</span><div><div class="trust-title">Genuine accessories</div><div class="trust-desc">Quality checked before it ships</div></div></div>
+      <div class="trust-item"><span class="trust-icon">↺</span><div><div class="trust-title">Easy replacement</div><div class="trust-desc">Damaged in transit? We resend, free</div></div></div>
+      <div class="trust-item"><span class="trust-icon">₨</span><div><div class="trust-title">Cash on delivery</div><div class="trust-desc">Pay when it arrives at your door</div></div></div>
+    </div>
+  </section>
+
   <section class="section" id="shop">
     <h2 class="section-title">Shop by category</h2>
     <div class="cat-grid" id="catGrid"></div>
@@ -69,12 +90,46 @@
     <div class="product-grid" id="productGrid"></div>
   </section>
 
+  <section class="section">
+    <div class="promo-banner glass">
+      <div class="promo-title">Fast delivery to every corner of Pakistan.</div>
+      <div class="promo-sub">Karachi · Lahore · Islamabad · Multan · Faisalabad · Peshawar · and beyond</div>
+      <button class="pill pill-primary promo-btn" id="promoShopBtn">Start shopping</button>
+    </div>
+  </section>
+
   <section class="section" id="story">
     <h2 class="section-title">What customers say</h2>
     <div class="testimonial-grid" id="testimonialGrid"></div>
   </section>
 
-  <footer class="site-footer">© 2026 Lofty Store — mobile accessories, done right.</footer>
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-brand">Lofty Store</div>
+        <p class="footer-blurb">Mobile accessories, done right. Cases, chargers, screen protection and car mounts — one clean aesthetic across your whole setup.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Shop</div>
+        <a class="footer-link" data-nav="Cases">Cases</a>
+        <a class="footer-link" data-nav="Charging">Charging</a>
+        <a class="footer-link" data-nav="Protection">Protection</a>
+        <a class="footer-link" data-nav="Car & Travel">Car &amp; Travel</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Support</div>
+        <a class="footer-link" href="order-status.html">Track your order</a>
+        <a class="footer-link" href="checkout.html">Checkout</a>
+        <span class="footer-link">Cash on delivery, nationwide</span>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <a class="footer-link" href="https://wa.me/923001234567?text=Hi!%20I%27d%20like%20to%20order%20from%20Lofty%20Store." target="_blank" rel="noopener">WhatsApp: +92 300 1234567</a>
+        <span class="footer-link">Pakistan · nationwide delivery</span>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Lofty Store — mobile accessories, done right.</div>
+  </footer>
 </div>
 
 <script src="assets/store.js"></script>
