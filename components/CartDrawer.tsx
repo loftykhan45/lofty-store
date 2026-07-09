@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useStore } from "@/lib/StoreProvider";
-import { PRODUCTS, money } from "@/lib/products";
+import { PRODUCTS, money, whatsappCartLink } from "@/lib/products";
 import MediaFill from "@/components/MediaFill";
 
 export default function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { cart, removeFromCart, setQty, cartSubtotal } = useStore();
+  const { cart, removeFromCart, setQty, clearCart, cartCount, cartSubtotal } = useStore();
   const lines = Object.entries(cart)
     .map(([id, qty]) => {
       const product = PRODUCTS.find((p) => p.id === id);
@@ -19,21 +19,29 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
       <div className={`cart-overlay ${open ? "open" : ""}`} onClick={onClose} />
       <aside className={`cart-drawer ${open ? "open" : ""}`} aria-label="Shopping cart">
         <div className="cart-drawer-header">
-          <div className="cart-drawer-title">Your Cart</div>
-          <button className="cart-drawer-close" aria-label="Close cart" onClick={onClose}>×</button>
+          <button className="cart-drawer-back" aria-label="Close cart" onClick={onClose}>←</button>
+          <div>
+            <div className="cart-drawer-title">Your Cart</div>
+            <div className="cart-drawer-subtitle">
+              {cartCount === 0 ? "Your cart is empty" : `${cartCount} item${cartCount === 1 ? "" : "s"} · Cash on Delivery`}
+            </div>
+          </div>
+          {lines.length > 0 && (
+            <button className="cart-drawer-empty" onClick={clearCart}>Empty</button>
+          )}
         </div>
 
         {lines.length === 0 ? (
           <div className="cart-empty">Your cart is empty. Add something you&apos;ll love.</div>
         ) : (
           <>
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            <div className="cart-lines">
               {lines.map((line) => (
                 <div className="cart-line" key={line.product.id}>
                   <div className="cart-line-swatch"><MediaFill image={line.product.image} label={line.product.name} sizes="48px" /></div>
-                  <div style={{ flex: 1 }}>
+                  <div className="cart-line-body">
                     <div className="cart-line-name">{line.product.name}</div>
-                    <div className="cart-line-meta">{money(line.subtotal)}</div>
+                    <div className="cart-line-meta">{money(line.product.price)} each</div>
                     <div className="qty-stepper qty-stepper-sm">
                       <button
                         type="button"
@@ -52,16 +60,50 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
                       </button>
                     </div>
                   </div>
-                  <button className="cart-line-remove" onClick={() => removeFromCart(line.product.id)}>Remove</button>
+                  <div className="cart-line-right">
+                    <button className="cart-line-close" aria-label={`Remove ${line.product.name}`} onClick={() => removeFromCart(line.product.id)}>×</button>
+                    <div className="cart-line-price">{money(line.subtotal)}</div>
+                  </div>
                 </div>
               ))}
             </div>
-            <div className="cart-total-row">
-              <div className="cart-total-label">Total</div>
-              <div className="cart-total-value">{money(cartSubtotal)}</div>
+
+            <div className="cart-summary">
+              <div className="cart-summary-row">
+                <span>Subtotal</span>
+                <span>{money(cartSubtotal)}</span>
+              </div>
+              <div className="cart-summary-row">
+                <span>Shipping</span>
+                <span>Calculated at checkout</span>
+              </div>
+              <div className="cart-total-row">
+                <div className="cart-total-label">Total</div>
+                <div className="cart-total-value">{money(cartSubtotal)}</div>
+              </div>
             </div>
-            <Link href="/checkout" className="pill pill-primary cart-checkout-btn" onClick={onClose}>Checkout</Link>
+
+            <div className="cart-note">💵 Cash on Delivery available on every order.</div>
+
+            <a
+              className="cart-whatsapp-btn"
+              href={whatsappCartLink(lines, cartSubtotal)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Order on WhatsApp instead
+            </a>
+
+            <button className="cart-continue-btn" onClick={onClose}>← Continue shopping</button>
           </>
+        )}
+
+        {lines.length > 0 && (
+          <div className="cart-drawer-footer">
+            <Link href="/checkout" className="pill pill-primary cart-checkout-btn" onClick={onClose}>
+              Checkout · {money(cartSubtotal)}
+            </Link>
+          </div>
         )}
       </aside>
     </>
