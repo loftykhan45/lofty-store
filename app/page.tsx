@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from "react";
 import { useStore } from "@/lib/StoreProvider";
-import { PRODUCTS, CATEGORIES, TESTIMONIALS, money } from "@/lib/products";
+import { PRODUCTS, CATEGORIES, TESTIMONIALS, money, whatsappProductLink, whatsappLink } from "@/lib/products";
 import MediaFill from "@/components/MediaFill";
 
 export default function LandingPage() {
-  const { cart, addToCart, activeCategory, setActiveCategory } = useStore();
+  const { cart, addToCart, setQty, activeCategory, setActiveCategory } = useStore();
   const [query, setQuery] = useState("");
 
   const filteredProducts = useMemo(() => {
@@ -100,7 +100,7 @@ export default function LandingPage() {
         ) : (
           <div className="product-grid">
             {filteredProducts.map((p) => {
-              const inCart = !!cart[p.id];
+              const qty = cart[p.id] || 0;
               return (
                 <div className="product-card glass" key={p.id}>
                   <div className="product-photo"><MediaFill image={p.image} label={p.name} /></div>
@@ -109,10 +109,24 @@ export default function LandingPage() {
                     <div className="product-name">{p.name}</div>
                     <div className="product-price-row">
                       {money(p.price)}
-                      <button className={`add-btn ${inCart ? "in-cart" : ""}`} onClick={() => addToCart(p.id)}>
-                        {inCart ? `In cart (${cart[p.id]})` : "Add"}
-                      </button>
+                      {qty > 0 ? (
+                        <div className="qty-stepper">
+                          <button type="button" aria-label={`Decrease ${p.name} quantity`} onClick={() => setQty(p.id, qty - 1)}>−</button>
+                          <span>{qty}</span>
+                          <button type="button" aria-label={`Increase ${p.name} quantity`} onClick={() => setQty(p.id, qty + 1)}>+</button>
+                        </div>
+                      ) : (
+                        <button className="add-btn" onClick={() => addToCart(p.id)}>Add</button>
+                      )}
                     </div>
+                    <a
+                      className="whatsapp-btn-sm"
+                      href={whatsappProductLink(p, qty || 1)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Order on WhatsApp
+                    </a>
                   </div>
                 </div>
               );
@@ -133,7 +147,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <footer className="site-footer">© 2026 Lofty Store — mobile accessories, done right.</footer>
+      <footer className="site-footer">
+        <div>© 2026 Lofty Store — mobile accessories, done right.</div>
+        <a className="footer-whatsapp" href={whatsappLink("Hi Lofty Store! I have a question.")} target="_blank" rel="noopener noreferrer">
+          Chat with us on WhatsApp
+        </a>
+      </footer>
     </>
   );
 }
