@@ -76,7 +76,7 @@ export default function LandingPage() {
           <div>
             <div className="hero-eyebrow">Mobile accessories, refined</div>
             <h1 className="hero-title">Every day carry, elevated.</h1>
-            <p className="hero-body">Cases, chargers, screen protection and car mounts — one clean aesthetic across your whole setup.</p>
+            <p className="hero-body">Cases, power banks, cables, screen protection, car mounts and airbuds — one clean aesthetic across your whole setup.</p>
             <div className="hero-actions">
               <button className="pill pill-primary" onClick={scrollToProducts}>Shop Now</button>
               <button
