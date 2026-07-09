@@ -58,6 +58,27 @@ export const PRODUCTS: Product[] = [
     image: "/img/category-cases.jpg",
     series,
   })),
+  ...(
+    [
+      ["Anker", "PowerCore 10000mAh", 3200],
+      ["Xiaomi", "Mi Power Bank 3 10000mAh", 2600],
+      ["Baseus", "Bipow 10000mAh", 2400],
+      ["Romoss", "Sense 8 20000mAh", 3000],
+      ["Faster", "FPB-i 10000mAh", 1800],
+      ["Joyroom", "JR-PBX01 10000mAh", 2000],
+      ["Remax", "RPP-53 10000mAh", 1900],
+      ["Eloop", "E37 20000mAh", 2200],
+      ["Proda", "Chicken 10000mAh", 2100],
+      ["Dany Technologies", "PB-118 10000mAh", 1700],
+    ] as [string, string, number][]
+  ).map(([brand, model, price]) => ({
+    id: `powerbank-${brand.toLowerCase().replace(/\s+/g, "-")}`,
+    name: `${brand} ${model}`,
+    cat: "Charging",
+    price,
+    image: "/img/product-powercell.jpg",
+    series: "Power Banks",
+  })),
 ];
 
 export const CATEGORIES = [
