@@ -3,6 +3,7 @@ import "./globals.css";
 import { StoreProvider } from "@/lib/StoreProvider";
 import Header from "@/components/Header";
 import Orbs from "@/components/Orbs";
+import AnnounceBar from "@/components/AnnounceBar";
 
 export const metadata: Metadata = {
   title: "Lofty Store — Mobile accessories, refined",
@@ -16,6 +17,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <StoreProvider>
           <Orbs />
           <div className="page">
+            <AnnounceBar />
             <Header />
             {children}
           </div>
