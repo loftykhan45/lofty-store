@@ -6,10 +6,12 @@ After=network.target
 Type=simple
 Environment=WEBHOOK_SECRET=CHANGE_ME_TO_A_RANDOM_SECRET
 Environment=DEPLOY_HOOK_PORT=7777
-Environment=DEPLOY_SCRIPT=/var/www/lofty-store/deploy.sh
-ExecStart=/usr/bin/node /var/www/lofty-store/webhook-listener.js
+Environment=DEPLOY_SCRIPT=/var/www/lofty-store/deploy/deploy.sh
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/node /var/www/lofty-store/deploy/webhook-listener.js
+WorkingDirectory=/var/www/lofty-store
 Restart=on-failure
-User=www-data
+User=<DEPLOY_USER>
 
 [Install]
 WantedBy=multi-user.target
