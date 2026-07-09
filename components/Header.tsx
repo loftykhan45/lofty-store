@@ -6,7 +6,7 @@ import { useStore } from "@/lib/StoreProvider";
 import CartDrawer from "@/components/CartDrawer";
 import { whatsappLink } from "@/lib/products";
 
-const NAV_LINKS = ["Shop", "Cases", "Charging", "Protection", "Car & Travel"];
+const NAV_LINKS = ["Shop", "Cases", "Powerbank", "Protection", "Car & Travel", "Audio"];
 
 const BREADCRUMB_STEPS: Record<string, string[]> = {
   "/checkout": ["Cart", "Checkout", "Confirmation"],
