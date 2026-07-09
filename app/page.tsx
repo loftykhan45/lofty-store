@@ -1,13 +1,45 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/lib/StoreProvider";
 import { PRODUCTS, CATEGORIES, TESTIMONIALS, money, whatsappProductLink, whatsappLink, type Product } from "@/lib/products";
 import MediaFill from "@/components/MediaFill";
 
+const MAX_SUGGESTIONS = 6;
+
 export default function LandingPage() {
   const { cart, addToCart, setQty, activeCategory, setActiveCategory } = useStore();
   const [query, setQuery] = useState("");
+  const [suggestionsOpen, setSuggestionsOpen] = useState(false);
+  const searchWrapRef = useRef<HTMLDivElement>(null);
+
+  // Live suggestions — searches the whole catalog (ignores any active
+  // category filter) so a match appears the instant you type, without
+  // needing to scroll down to the (possibly filtered) products grid.
+  const suggestions = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return PRODUCTS.filter(
+      (p) => p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q)
+    ).slice(0, MAX_SUGGESTIONS);
+  }, [query]);
+
+  useEffect(() => {
+    function onClickOutside(e: MouseEvent) {
+      if (searchWrapRef.current && !searchWrapRef.current.contains(e.target as Node)) {
+        setSuggestionsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
+
+  function goToSuggestion(p: Product) {
+    setQuery(p.name);
+    setActiveCategory(null);
+    setSuggestionsOpen(false);
+    document.getElementById("products")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   const filteredProducts = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -93,7 +125,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <div className="search-wrap">
+      <div className="search-wrap" ref={searchWrapRef}>
         <div className="search-box glass">
           <span className="search-icon">🔍</span>
           <input
@@ -101,10 +133,45 @@ export default function LandingPage() {
             type="search"
             placeholder="Search products — try “case” or “charger”"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setSuggestionsOpen(true);
+            }}
+            onFocus={() => setSuggestionsOpen(true)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setSuggestionsOpen(false);
+              if (e.key === "Enter") {
+                setSuggestionsOpen(false);
+                document.getElementById("products")?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }}
           />
-          {query && <button className="search-clear" onClick={() => setQuery("")}>✕</button>}
+          {query && <button className="search-clear" onClick={() => { setQuery(""); setSuggestionsOpen(false); }}>✕</button>}
         </div>
+
+        {suggestionsOpen && query.trim() && (
+          <div className="search-suggestions glass">
+            {suggestions.length === 0 ? (
+              <div className="search-suggestion-empty">No products match “{query}”.</div>
+            ) : (
+              suggestions.map((p) => (
+                <button
+                  key={p.id}
+                  className="search-suggestion-item"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => goToSuggestion(p)}
+                >
+                  <div className="search-suggestion-thumb"><MediaFill image={p.image} label={p.name} sizes="36px" /></div>
+                  <div className="search-suggestion-text">
+                    <div className="search-suggestion-name">{p.name}</div>
+                    <div className="search-suggestion-cat">{p.cat}</div>
+                  </div>
+                  <div className="search-suggestion-price">{money(p.price)}</div>
+                </button>
+              ))
+            )}
+          </div>
+        )}
       </div>
 
       <section className="section" id="shop">
