@@ -7,7 +7,7 @@ import AnnounceBar from "@/components/AnnounceBar";
 
 export const metadata: Metadata = {
   title: "Lofty Store — Mobile accessories, refined",
-  description: "Cases, chargers, screen protection and car mounts — one clean aesthetic across your whole setup.",
+  description: "Cases, power banks, cables, screen protection, car mounts and airbuds — one clean aesthetic across your whole setup.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
