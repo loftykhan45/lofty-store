@@ -291,6 +291,11 @@ a { color: inherit; }
 .cat-name { color: #fff; font-size: 15px; font-weight: 600; }
 
 /* products */
+.product-groups { display: flex; flex-direction: column; gap: 36px; }
+.product-group-title {
+  color: #fff; font-size: 17px; font-weight: 700; margin-bottom: 16px;
+  padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
 .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .product-card { padding: 18px; display: flex; flex-direction: column; gap: 16px; border-radius: 24px; transition: transform 0.15s ease; }
 .product-photo { position: relative; height: 180px; border-radius: 18px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
