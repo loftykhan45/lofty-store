@@ -239,6 +239,12 @@ export function whatsappProductLink(product: Product, qty: number = 1): string {
   return whatsappLink(message);
 }
 
+export function whatsappCartLink(lines: { product: Product; qty: number; subtotal: number }[], total: number): string {
+  const itemLines = lines.map((l) => `${l.qty} x ${l.product.name} — ${money(l.subtotal)}`).join("\n");
+  const message = `Hi Lofty Store! I'd like to order:\n${itemLines}\n\nTotal: ${money(total)}`;
+  return whatsappLink(message);
+}
+
 export const ANNOUNCEMENTS = [
   "Cash on Delivery available",
   "Fast delivery all over Pakistan",
