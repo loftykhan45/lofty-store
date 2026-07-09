@@ -11,11 +11,11 @@ export type Product = {
 // product categories (not a currency conversion of a placeholder USD price).
 export const PRODUCTS: Product[] = [
   { id: "aerocase-clear", name: "AeroCase Clear", cat: "Cases", price: 450, image: "/img/category-cases.jpg" },
-  { id: "magflow-charger", name: "MagFlow Charger", cat: "Charging", price: 1800, image: "/img/category-charging.jpg" },
+  { id: "magflow-charger", name: "MagFlow Charger", cat: "Powerbank", price: 1800, image: "/img/category-charging.jpg" },
   { id: "armorglass-pro", name: "ArmorGlass Pro", cat: "Protection", price: 250, image: "/img/category-protection.png" },
   { id: "drivemount-x", name: "DriveMount X", cat: "Car & Travel", price: 800, image: "/img/category-car.jpg" },
-  { id: "powercell-10k", name: "PowerCell 10K", cat: "Charging", price: 2800, image: "/img/product-powercell.jpg" },
-  { id: "braidlink-cable", name: "BraidLink Cable", cat: "Charging", price: 350, image: "/img/product-cable.jpg" },
+  { id: "powercell-10k", name: "PowerCell 10K", cat: "Powerbank", price: 2800, image: "/img/product-powercell.jpg" },
+  { id: "braidlink-cable", name: "BraidLink Cable", cat: "Powerbank", price: 350, image: "/img/product-cable.jpg" },
   ...(
     [
       ["iPhone X", 350, "iPhone X"],
@@ -74,18 +74,54 @@ export const PRODUCTS: Product[] = [
   ).map(([brand, model, price]) => ({
     id: `powerbank-${brand.toLowerCase().replace(/\s+/g, "-")}`,
     name: `${brand} ${model}`,
-    cat: "Charging",
+    cat: "Powerbank",
     price,
     image: "/img/product-powercell.jpg",
     series: "Power Banks",
+  })),
+  ...(
+    [
+      ["USB-A to Lightning Cable 1m", 250],
+      ["USB-A to Type-C Cable 1m", 250],
+      ["Type-C to Type-C Cable 1m", 280],
+      ["Braided USB-A to Type-C Cable 2m", 450],
+      ["20W USB-C Power Adapter", 900],
+      ["35W Dual-Port Fast Charger Adapter", 1600],
+      ["65W GaN Charger Adapter", 3200],
+    ] as [string, number][]
+  ).map(([name, price]) => ({
+    id: `cable-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`,
+    name,
+    cat: "Powerbank",
+    price,
+    image: "/img/product-cable.jpg",
+    series: "Cables & Adapters",
+  })),
+  ...(
+    [
+      ["Lofty Airbuds Classic", 1800],
+      ["QCY T13 Wireless Earbuds", 2200],
+      ["Haylou GT7 Wireless Earbuds", 2800],
+      ["Xiaomi Redmi Buds 5", 3200],
+      ["Anker Soundcore P20i", 3600],
+      ["Lofty Airbuds Pro ANC", 4500],
+    ] as [string, number][]
+  ).map(([name, price]) => ({
+    id: `audio-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`,
+    name,
+    cat: "Audio",
+    price,
+    image: "/img/category-protection.png",
+    series: "Airbuds",
   })),
 ];
 
 export const CATEGORIES = [
   { name: "Cases", image: "/img/category-cases.jpg" },
-  { name: "Charging", image: "/img/category-charging.jpg" },
+  { name: "Powerbank", image: "/img/category-charging.jpg" },
   { name: "Protection", image: "/img/category-protection.png" },
   { name: "Car & Travel", image: "/img/category-car.jpg" },
+  { name: "Audio", image: "/img/category-protection.png" },
 ];
 
 export const TESTIMONIALS = [
