@@ -1,14 +1,28 @@
 #!/usr/bin/env bash
-# Lofty Store — deploy/update script.
-# Pulls the latest site from GitHub into the directory Caddy serves.
+# Lofty Store — deploy/update script (Next.js version).
+# Pulls the latest from GitHub, rebuilds, and reloads the running app via PM2.
 #
-# First-time setup on the VPS:
+# First-time setup on the VPS (replace <DEPLOY_USER> with whatever unix user
+# will own /var/www/lofty-store — reuse the same user for the app process and
+# this script/webhook so file permissions stay consistent):
+#
 #   sudo mkdir -p /var/www/lofty-store
-#   sudo chown $USER:$USER /var/www/lofty-store
+#   sudo chown <DEPLOY_USER>:<DEPLOY_USER> /var/www/lofty-store
 #   git clone https://github.com/loftykhan45/lofty-store.git /var/www/lofty-store
+#   cd /var/www/lofty-store
+#   npm ci
+#   npm run build
+#   npm install -g pm2          # if not already installed
+#   pm2 start deploy/ecosystem.config.js
+#   pm2 save
+#   pm2 startup                 # one-time: run the sudo command it prints, then `pm2 save` again
 #
-# Then run this script any time to update, or wire it to run automatically
-# (see systemd unit + timer below, or the webhook option).
+# better-sqlite3 is a native module — if `npm ci` fails compiling it, run:
+#   sudo apt-get update && sudo apt-get install -y build-essential python3
+# and retry.
+#
+# After first-time setup, this script handles every subsequent deploy
+# (run manually, or automatically via the webhook listener — see README.md).
 
 set -euo pipefail
 
@@ -18,12 +32,16 @@ BRANCH="main"
 cd "$SITE_DIR"
 git fetch --quiet origin "$BRANCH"
 git reset --hard "origin/$BRANCH"
-git clean -fd
 
-# Static site, no build step — Caddy's file_server picks up the new files
-# immediately. Reload Caddy only if you also keep its Caddyfile in this repo.
-if [ -f "$SITE_DIR/Caddyfile" ]; then
-  sudo systemctl reload caddy
-fi
+# Keep the SQLite database, installed deps, and Next.js build cache across
+# deploys — they're gitignored (untracked), so a plain `git clean -fd` would
+# otherwise delete them, wiping every order on every deploy.
+git clean -fd -e data -e node_modules -e .next
+
+npm ci
+npm run build
+
+# Zero-downtime reload: PM2 swaps in the freshly-built process.
+pm2 reload lofty-store-app --update-env
 
 echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) deployed $(git rev-parse --short HEAD)"
