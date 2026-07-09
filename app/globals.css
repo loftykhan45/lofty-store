@@ -136,6 +136,12 @@ a { color: inherit; }
   padding: 16px 28px;
   display: flex; align-items: center; justify-content: space-between;
   border-radius: 24px;
+  /* Opaque enough to fully mask scrolled content (e.g. bright green
+     WhatsApp buttons) behind it — the generic .glass tint is too see-through
+     for a sticky bar sitting over a busy product grid. */
+  background: rgba(9, 10, 20, 0.92);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
 }
 .nav-brand { color: var(--text-primary); font-size: 19px; font-weight: 700; letter-spacing: -0.01em; text-decoration: none; }
 .nav-links { display: flex; gap: 28px; font-size: 14px; color: rgba(255, 255, 255, 0.7); font-weight: 500; list-style: none; }
