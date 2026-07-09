@@ -1,5 +1,6 @@
 // Landing page: category filter, product grid, cart drawer wiring
 let activeCategory = null;
+const productQty = {};
 
 function renderCategories() {
   const grid = document.getElementById("catGrid");
@@ -25,21 +26,56 @@ function renderProducts() {
   const list = PRODUCTS.filter((p) => !activeCategory || p.cat === activeCategory);
   grid.innerHTML = list.map((p) => {
     const inCart = !!cart[p.id];
+    const qty = productQty[p.id] || 1;
     return `
     <div class="product-card glass">
-      <div class="product-photo">${mediaFill(p.image, p.hue, p.name)}</div>
+      <div class="product-photo">
+        ${mediaFill(p.image, p.hue, p.name)}
+        <span class="product-badge">${p.badge}</span>
+      </div>
       <div>
         <div class="product-cat">${p.cat}</div>
         <div class="product-name">${p.name}</div>
+        <div class="product-rating"><span class="stars">${starRow(p.rating)}</span><span class="rating-count">${p.rating} · ${p.reviews} reviews</span></div>
         <div class="product-price-row">
           ${money(p.price)}
-          <button class="add-btn ${inCart ? "in-cart" : ""}" data-id="${p.id}">${inCart ? `In cart (${cart[p.id]})` : "Add"}</button>
+          <div class="qty-selector" data-id="${p.id}">
+            <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">−</button>
+            <span class="qty-value">${qty}</span>
+            <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">+</button>
+          </div>
+        </div>
+        <div class="product-actions">
+          <button class="add-btn ${inCart ? "in-cart" : ""}" data-id="${p.id}">${inCart ? `In cart (${cart[p.id]})` : "Add to cart"}</button>
+          <a class="whatsapp-btn-sm" href="${whatsappProductLink(p, qty)}" target="_blank" rel="noopener" data-id="${p.id}" data-wa-link>WhatsApp</a>
         </div>
       </div>
     </div>`;
   }).join("");
+
   grid.querySelectorAll(".add-btn").forEach((btn) => {
-    btn.addEventListener("click", () => addToCart(btn.dataset.id));
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      addToCart(id, productQty[id] || 1);
+      productQty[id] = 1;
+    });
+  });
+
+  grid.querySelectorAll(".qty-selector").forEach((sel) => {
+    const id = sel.dataset.id;
+    const valueEl = sel.querySelector(".qty-value");
+    const waLink = sel.closest(".product-card").querySelector("[data-wa-link]");
+    const product = findProduct(id);
+    sel.querySelector(".qty-minus").addEventListener("click", () => {
+      productQty[id] = Math.max(1, (productQty[id] || 1) - 1);
+      valueEl.textContent = productQty[id];
+      waLink.href = whatsappProductLink(product, productQty[id]);
+    });
+    sel.querySelector(".qty-plus").addEventListener("click", () => {
+      productQty[id] = Math.min(20, (productQty[id] || 1) + 1);
+      valueEl.textContent = productQty[id];
+      waLink.href = whatsappProductLink(product, productQty[id]);
+    });
   });
 
   document.getElementById("filterLabel").textContent = activeCategory ? "Clear filter ✕" : "View all →";
@@ -56,8 +92,12 @@ document.getElementById("filterLabel").addEventListener("click", () => {
 function renderTestimonials() {
   document.getElementById("testimonialGrid").innerHTML = TESTIMONIALS.map((t) => `
     <div class="testimonial-card glass">
+      <div class="stars">${starRow(t.rating)}</div>
       <div class="testimonial-quote">&ldquo;${t.quote}&rdquo;</div>
-      <div class="testimonial-name">— ${t.name}</div>
+      <div class="testimonial-footer">
+        <span class="testimonial-name">${t.name}</span>
+        <span class="testimonial-verified">✓ Verified buyer</span>
+      </div>
     </div>
   `).join("");
 }
@@ -141,6 +181,9 @@ document.getElementById("shopNowBtn").addEventListener("click", () => goToShop(n
 document.getElementById("ourStoryBtn").addEventListener("click", () => {
   document.getElementById("story").scrollIntoView({ behavior: "smooth", block: "start" });
 });
+
+const promoShopBtn = document.getElementById("promoShopBtn");
+if (promoShopBtn) promoShopBtn.addEventListener("click", () => goToShop(null));
 
 renderCategories();
 renderProducts();
