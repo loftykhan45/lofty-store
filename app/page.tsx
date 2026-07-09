@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useStore } from "@/lib/StoreProvider";
-import { PRODUCTS, CATEGORIES, TESTIMONIALS, money, whatsappProductLink, whatsappLink } from "@/lib/products";
+import { PRODUCTS, CATEGORIES, TESTIMONIALS, money, whatsappProductLink, whatsappLink, type Product } from "@/lib/products";
 import MediaFill from "@/components/MediaFill";
 
 export default function LandingPage() {
@@ -17,6 +17,53 @@ export default function LandingPage() {
       return matchesCategory && matchesQuery;
     });
   }, [activeCategory, query]);
+
+  // Group by model series (e.g. every "iPhone 15" variant falls under one
+  // "iPhone 15" heading) so each variant card visibly belongs to its model.
+  // Products without a series (generic accessories) go in a single ungrouped bucket.
+  const productGroups = useMemo(() => {
+    const groups = new Map<string, Product[]>();
+    for (const p of filteredProducts) {
+      const key = p.series ?? "";
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key)!.push(p);
+    }
+    return groups;
+  }, [filteredProducts]);
+  const isGrouped = [...productGroups.keys()].some((k) => k !== "");
+
+  function renderProductCard(p: Product) {
+    const qty = cart[p.id] || 0;
+    return (
+      <div className="product-card glass" key={p.id}>
+        <div className="product-photo"><MediaFill image={p.image} label={p.name} /></div>
+        <div>
+          <div className="product-cat">{p.cat}</div>
+          <div className="product-name">{p.name}</div>
+          <div className="product-price-row">
+            {money(p.price)}
+            {qty > 0 ? (
+              <div className="qty-stepper">
+                <button type="button" aria-label={`Decrease ${p.name} quantity`} onClick={() => setQty(p.id, qty - 1)}>−</button>
+                <span>{qty}</span>
+                <button type="button" aria-label={`Increase ${p.name} quantity`} onClick={() => setQty(p.id, qty + 1)}>+</button>
+              </div>
+            ) : (
+              <button className="add-btn" onClick={() => addToCart(p.id)}>Add</button>
+            )}
+          </div>
+          <a
+            className="whatsapp-btn-sm"
+            href={whatsappProductLink(p, qty || 1)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Order on WhatsApp
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   function scrollToProducts() {
     document.getElementById("products")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -97,41 +144,17 @@ export default function LandingPage() {
 
         {filteredProducts.length === 0 ? (
           <div className="search-empty">No products match “{query}”.</div>
-        ) : (
-          <div className="product-grid">
-            {filteredProducts.map((p) => {
-              const qty = cart[p.id] || 0;
-              return (
-                <div className="product-card glass" key={p.id}>
-                  <div className="product-photo"><MediaFill image={p.image} label={p.name} /></div>
-                  <div>
-                    <div className="product-cat">{p.cat}</div>
-                    <div className="product-name">{p.name}</div>
-                    <div className="product-price-row">
-                      {money(p.price)}
-                      {qty > 0 ? (
-                        <div className="qty-stepper">
-                          <button type="button" aria-label={`Decrease ${p.name} quantity`} onClick={() => setQty(p.id, qty - 1)}>−</button>
-                          <span>{qty}</span>
-                          <button type="button" aria-label={`Increase ${p.name} quantity`} onClick={() => setQty(p.id, qty + 1)}>+</button>
-                        </div>
-                      ) : (
-                        <button className="add-btn" onClick={() => addToCart(p.id)}>Add</button>
-                      )}
-                    </div>
-                    <a
-                      className="whatsapp-btn-sm"
-                      href={whatsappProductLink(p, qty || 1)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Order on WhatsApp
-                    </a>
-                  </div>
-                </div>
-              );
-            })}
+        ) : isGrouped ? (
+          <div className="product-groups">
+            {[...productGroups.entries()].map(([series, items]) => (
+              <div className="product-group" key={series || "other"}>
+                {series && <h3 className="product-group-title">{series}</h3>}
+                <div className="product-grid">{items.map(renderProductCard)}</div>
+              </div>
+            ))}
           </div>
+        ) : (
+          <div className="product-grid">{filteredProducts.map(renderProductCard)}</div>
         )}
       </section>
 
