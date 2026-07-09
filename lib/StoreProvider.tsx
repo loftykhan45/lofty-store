@@ -9,6 +9,7 @@ type StoreContextValue = {
   cart: Cart;
   addToCart: (id: string) => void;
   removeFromCart: (id: string) => void;
+  setQty: (id: string, qty: number) => void;
   clearCart: () => void;
   cartCount: number;
   cartSubtotal: number;
@@ -52,6 +53,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       delete next[id];
       return next;
     });
+  const setQty = (id: string, qty: number) =>
+    setCart((c) => {
+      if (qty <= 0) {
+        const next = { ...c };
+        delete next[id];
+        return next;
+      }
+      return { ...c, [id]: qty };
+    });
   const clearCart = () => setCart({});
 
   const cartCount = Object.values(cart).reduce((a, b) => a + b, 0);
@@ -66,6 +76,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         cart,
         addToCart,
         removeFromCart,
+        setQty,
         clearCart,
         cartCount,
         cartSubtotal,
