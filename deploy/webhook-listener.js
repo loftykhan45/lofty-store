@@ -1,6 +1,6 @@
 // Lofty Store — GitHub webhook listener.
 // Listens on localhost only; Caddy reverse-proxies /deploy-hook to it.
-// On a verified push to main, runs deploy.sh.
+// On a verified push to main, runs deploy.sh (build + PM2 reload).
 //
 // Setup:
 //   1. npm install (no deps needed, uses only node builtins)
@@ -16,11 +16,10 @@
 const http = require("http");
 const crypto = require("crypto");
 const { execFile } = require("child_process");
-const path = require("path");
 
 const PORT = process.env.DEPLOY_HOOK_PORT || 7777;
 const SECRET = process.env.WEBHOOK_SECRET || "CHANGE_ME_TO_A_RANDOM_SECRET";
-const DEPLOY_SCRIPT = process.env.DEPLOY_SCRIPT || "/var/www/lofty-store/deploy.sh";
+const DEPLOY_SCRIPT = process.env.DEPLOY_SCRIPT || "/var/www/lofty-store/deploy/deploy.sh";
 const BRANCH = "refs/heads/main";
 
 function verifySignature(payload, signature) {
@@ -62,7 +61,7 @@ const server = http.createServer((req, res) => {
 
     res.writeHead(200).end("deploying");
     console.log(`${new Date().toISOString()} push to main, running deploy script`);
-    execFile(DEPLOY_SCRIPT, (err, stdout, stderr) => {
+    execFile(DEPLOY_SCRIPT, { timeout: 5 * 60 * 1000 }, (err, stdout, stderr) => {
       if (err) {
         console.error("Deploy failed:", err.message, stderr);
         return;
