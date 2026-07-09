@@ -20,7 +20,19 @@ export default function Header() {
   const { cartCount, cartOpen, setCartOpen, mobileMenuOpen, setMobileMenuOpen, setActiveCategory } = useStore();
 
   const isLanding = pathname === "/";
+  const isAdmin = pathname.startsWith("/admin");
   const breadcrumb = BREADCRUMB_STEPS[pathname];
+
+  if (isAdmin) {
+    return (
+      <nav className="nav glass" style={{ maxWidth: 760 }}>
+        <Link href="/" className="nav-brand">Lofty Store</Link>
+        <div className="nav-breadcrumb">
+          <span className="active">Admin</span>
+        </div>
+      </nav>
+    );
+  }
 
   function goToShop(name: string) {
     setActiveCategory(name === "Shop" ? null : name);
