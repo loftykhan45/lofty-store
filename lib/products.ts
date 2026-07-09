@@ -4,6 +4,7 @@ export type Product = {
   cat: string;
   price: number;
   image: string;
+  series?: string;
 };
 
 // Prices in PKR, set to realistic Pakistani retail market rates for these
@@ -17,44 +18,45 @@ export const PRODUCTS: Product[] = [
   { id: "braidlink-cable", name: "BraidLink Cable", cat: "Charging", price: 350, image: "/img/product-cable.jpg" },
   ...(
     [
-      ["iPhone X", 350],
-      ["iPhone XR", 370],
-      ["iPhone XS", 400],
-      ["iPhone XS Max", 430],
-      ["iPhone 11", 390],
-      ["iPhone 11 Pro", 450],
-      ["iPhone 11 Pro Max", 480],
-      ["iPhone 12 mini", 400],
-      ["iPhone 12", 420],
-      ["iPhone 12 Pro", 480],
-      ["iPhone 12 Pro Max", 510],
-      ["iPhone 13 mini", 430],
-      ["iPhone 13", 450],
-      ["iPhone 13 Pro", 510],
-      ["iPhone 13 Pro Max", 540],
-      ["iPhone 14", 480],
-      ["iPhone 14 Plus", 510],
-      ["iPhone 14 Pro", 540],
-      ["iPhone 14 Pro Max", 570],
-      ["iPhone 15", 520],
-      ["iPhone 15 Plus", 550],
-      ["iPhone 15 Pro", 580],
-      ["iPhone 15 Pro Max", 610],
-      ["iPhone 16", 560],
-      ["iPhone 16 Plus", 590],
-      ["iPhone 16 Pro", 620],
-      ["iPhone 16 Pro Max", 650],
-      ["iPhone 17", 600],
-      ["iPhone 17 Air", 630],
-      ["iPhone 17 Pro", 660],
-      ["iPhone 17 Pro Max", 690],
-    ] as [string, number][]
-  ).map(([model, price]) => ({
+      ["iPhone X", 350, "iPhone X"],
+      ["iPhone XR", 370, "iPhone X"],
+      ["iPhone XS", 400, "iPhone X"],
+      ["iPhone XS Max", 430, "iPhone X"],
+      ["iPhone 11", 390, "iPhone 11"],
+      ["iPhone 11 Pro", 450, "iPhone 11"],
+      ["iPhone 11 Pro Max", 480, "iPhone 11"],
+      ["iPhone 12 mini", 400, "iPhone 12"],
+      ["iPhone 12", 420, "iPhone 12"],
+      ["iPhone 12 Pro", 480, "iPhone 12"],
+      ["iPhone 12 Pro Max", 510, "iPhone 12"],
+      ["iPhone 13 mini", 430, "iPhone 13"],
+      ["iPhone 13", 450, "iPhone 13"],
+      ["iPhone 13 Pro", 510, "iPhone 13"],
+      ["iPhone 13 Pro Max", 540, "iPhone 13"],
+      ["iPhone 14", 480, "iPhone 14"],
+      ["iPhone 14 Plus", 510, "iPhone 14"],
+      ["iPhone 14 Pro", 540, "iPhone 14"],
+      ["iPhone 14 Pro Max", 570, "iPhone 14"],
+      ["iPhone 15", 520, "iPhone 15"],
+      ["iPhone 15 Plus", 550, "iPhone 15"],
+      ["iPhone 15 Pro", 580, "iPhone 15"],
+      ["iPhone 15 Pro Max", 610, "iPhone 15"],
+      ["iPhone 16", 560, "iPhone 16"],
+      ["iPhone 16 Plus", 590, "iPhone 16"],
+      ["iPhone 16 Pro", 620, "iPhone 16"],
+      ["iPhone 16 Pro Max", 650, "iPhone 16"],
+      ["iPhone 17", 600, "iPhone 17"],
+      ["iPhone 17 Air", 630, "iPhone 17"],
+      ["iPhone 17 Pro", 660, "iPhone 17"],
+      ["iPhone 17 Pro Max", 690, "iPhone 17"],
+    ] as [string, number, string][]
+  ).map(([model, price, series]) => ({
     id: `case-${model.toLowerCase().replace(/\s+/g, "-")}`,
     name: `${model} Case`,
     cat: "Cases",
     price,
     image: "/img/category-cases.jpg",
+    series,
   })),
 ];
 
