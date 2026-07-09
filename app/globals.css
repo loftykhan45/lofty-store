@@ -257,7 +257,7 @@ a { color: inherit; }
 .swatch-label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: rgba(255, 255, 255, 0.68); }
 
 /* search */
-.search-wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px 8px; }
+.search-wrap { position: relative; max-width: 1180px; margin: 0 auto; padding: 0 28px 8px; z-index: 15; }
 .search-box {
   display: flex; align-items: center; gap: 12px;
   padding: 14px 20px; border-radius: 999px;
@@ -270,6 +270,26 @@ a { color: inherit; }
 .search-input::placeholder { color: rgba(255, 255, 255, 0.53); }
 .search-clear { color: rgba(255, 255, 255, 0.63); font-size: 14px; cursor: pointer; background: none; border: none; flex-shrink: 0; }
 .search-empty { color: rgba(255, 255, 255, 0.63); font-size: 15px; padding: 40px 0; text-align: center; }
+
+.search-suggestions {
+  position: absolute; top: calc(100% + 8px); left: 28px; right: 28px;
+  border-radius: 20px; padding: 8px; max-height: 360px; overflow-y: auto;
+  background: rgba(19, 19, 32, 0.96);
+}
+.search-suggestion-item {
+  width: 100%; display: flex; align-items: center; gap: 12px;
+  padding: 8px 10px; border-radius: 14px; border: none; background: none; cursor: pointer;
+  text-align: left; font-family: inherit;
+}
+@media (hover: hover) {
+  .search-suggestion-item:hover { background: rgba(255, 255, 255, 0.08); }
+}
+.search-suggestion-thumb { position: relative; width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; overflow: hidden; display: flex; }
+.search-suggestion-text { flex: 1; min-width: 0; }
+.search-suggestion-name { color: #fff; font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search-suggestion-cat { color: rgba(255, 255, 255, 0.53); font-size: 11px; }
+.search-suggestion-price { color: rgba(255, 255, 255, 0.78); font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.search-suggestion-empty { color: rgba(255, 255, 255, 0.53); font-size: 13px; padding: 14px 10px; text-align: center; }
 
 /* generic section */
 .section { max-width: 1180px; margin: 0 auto; padding: 8px 28px 56px; }
