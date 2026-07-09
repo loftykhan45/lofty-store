@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useStore } from "@/lib/StoreProvider";
 import CartDrawer from "@/components/CartDrawer";
+import { whatsappLink } from "@/lib/products";
 
 const NAV_LINKS = ["Shop", "Cases", "Charging", "Protection", "Car & Travel"];
 
@@ -61,6 +62,14 @@ export default function Header() {
         )}
 
         <div className="nav-right">
+          <a
+            className="whatsapp-btn"
+            href={whatsappLink("Hi Lofty Store! I have a question.")}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp
+          </a>
           <button className="pill pill-primary cart-btn" aria-label="Open cart" onClick={() => setCartOpen(true)}>
             Cart
             <span className={`cart-badge ${cartCount === 0 ? "hidden" : ""}`}>{cartCount}</span>
