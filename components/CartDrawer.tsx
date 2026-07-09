@@ -6,7 +6,7 @@ import { PRODUCTS, money } from "@/lib/products";
 import MediaFill from "@/components/MediaFill";
 
 export default function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { cart, removeFromCart, cartSubtotal } = useStore();
+  const { cart, removeFromCart, setQty, cartSubtotal } = useStore();
   const lines = Object.entries(cart)
     .map(([id, qty]) => {
       const product = PRODUCTS.find((p) => p.id === id);
@@ -33,7 +33,24 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
                   <div className="cart-line-swatch"><MediaFill image={line.product.image} label={line.product.name} sizes="48px" /></div>
                   <div style={{ flex: 1 }}>
                     <div className="cart-line-name">{line.product.name}</div>
-                    <div className="cart-line-meta">Qty {line.qty} · {money(line.subtotal)}</div>
+                    <div className="cart-line-meta">{money(line.subtotal)}</div>
+                    <div className="qty-stepper qty-stepper-sm">
+                      <button
+                        type="button"
+                        aria-label={`Decrease ${line.product.name} quantity`}
+                        onClick={() => setQty(line.product.id, line.qty - 1)}
+                      >
+                        −
+                      </button>
+                      <span>{line.qty}</span>
+                      <button
+                        type="button"
+                        aria-label={`Increase ${line.product.name} quantity`}
+                        onClick={() => setQty(line.product.id, line.qty + 1)}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
                   <button className="cart-line-remove" onClick={() => removeFromCart(line.product.id)}>Remove</button>
                 </div>
