@@ -323,6 +323,7 @@ a { color: inherit; }
   height: 340px; border-radius: 26px;
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
+  background: #e9e9ec;
 }
 .swatch-label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: rgba(255, 255, 255, 0.68); }
 
