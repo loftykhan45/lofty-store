@@ -28,9 +28,17 @@ function init(): Database.Database {
       subtotal INTEGER NOT NULL,
       total INTEGER NOT NULL,
       lines_json TEXT NOT NULL,
-      placed_at INTEGER NOT NULL
+      placed_at INTEGER NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending'
     );
   `);
+
+  // Orders tables created before the admin portal won't have this column yet.
+  const cols = db.prepare("PRAGMA table_info(orders)").all() as { name: string }[];
+  if (!cols.some((c) => c.name === "status")) {
+    db.exec("ALTER TABLE orders ADD COLUMN status TEXT NOT NULL DEFAULT 'pending'");
+  }
+
   return db;
 }
 
