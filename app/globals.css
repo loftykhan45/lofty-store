@@ -394,7 +394,7 @@ a { color: inherit; }
   .product-card:hover { box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42); }
 }
 .product-photo { position: relative; height: 180px; border-radius: 18px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.product-photo-portrait { height: auto; aspect-ratio: 3 / 5; background: #edf0f9; }
+.product-photo-portrait { height: auto; aspect-ratio: 1 / 1; background: #edf0f9; }
 .product-cat { color: rgba(255, 255, 255, 0.68); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
 .product-name { color: #fff; font-size: 17px; font-weight: 600; margin-bottom: 10px; }
 .product-price-row { color: #fff; font-size: 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
