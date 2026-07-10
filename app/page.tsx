@@ -66,12 +66,9 @@ export default function LandingPage() {
 
   function renderProductCard(p: Product) {
     const qty = cart[p.id] || 0;
-    const isSwatch = p.image.startsWith("/img/case-");
     return (
       <div className="product-card glass" key={p.id}>
-        <div className={`product-photo${isSwatch ? " product-photo-swatch" : ""}`}>
-          <MediaFill image={p.image} label={p.name} fit={isSwatch ? "contain" : "cover"} />
-        </div>
+        <div className="product-photo"><MediaFill image={p.image} label={p.name} /></div>
         <div>
           <div className="product-cat">{p.cat}</div>
           <div className="product-name">{p.name}</div>
