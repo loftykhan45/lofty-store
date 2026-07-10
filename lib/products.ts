@@ -7,6 +7,15 @@ export type Product = {
   series?: string;
 };
 
+// Case variants cycle through these four real silicone-case colorways so the
+// catalog shows genuine style/color variety instead of one repeated photo.
+const CASE_COLORS = [
+  { name: "Blush Pink", image: "/img/case-blush.jpg" },
+  { name: "Charcoal", image: "/img/case-charcoal.jpg" },
+  { name: "Mint", image: "/img/case-mint.jpg" },
+  { name: "Coral", image: "/img/case-coral.jpg" },
+];
+
 // Prices in PKR, set to realistic Pakistani retail market rates for these
 // product categories (not a currency conversion of a placeholder USD price).
 export const PRODUCTS: Product[] = [
@@ -50,12 +59,12 @@ export const PRODUCTS: Product[] = [
       ["iPhone 17 Pro", 660, "iPhone 17"],
       ["iPhone 17 Pro Max", 690, "iPhone 17"],
     ] as [string, number, string][]
-  ).map(([model, price, series]) => ({
+  ).map(([model, price, series], i) => ({
     id: `case-${model.toLowerCase().replace(/\s+/g, "-")}`,
-    name: `${model} Case`,
+    name: `${model} Case — ${CASE_COLORS[i % CASE_COLORS.length].name}`,
     cat: "Cases",
     price,
-    image: "/img/category-cases.jpg",
+    image: CASE_COLORS[i % CASE_COLORS.length].image,
     series,
   })),
   ...(
