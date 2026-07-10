@@ -13,10 +13,10 @@ export type Product = {
 // never implies a specific camera layout that wouldn't match every iPhone
 // model it's used on.
 const CASE_COLORS = [
-  { name: "Blush Pink", image: "/img/case-blush-v3.jpg" },
-  { name: "Charcoal", image: "/img/case-charcoal-v3.jpg" },
-  { name: "Mint", image: "/img/case-mint-v3.jpg" },
-  { name: "Coral", image: "/img/case-coral-v3.jpg" },
+  { name: "Blush Pink", image: "/img/case-blush-v5.jpg" },
+  { name: "Charcoal", image: "/img/case-charcoal-v5.jpg" },
+  { name: "Mint", image: "/img/case-mint-v5.jpg" },
+  { name: "Coral", image: "/img/case-coral-v5.jpg" },
 ];
 
 // Prices in PKR, set to realistic Pakistani retail market rates for these
