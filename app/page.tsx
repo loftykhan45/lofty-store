@@ -70,7 +70,7 @@ export default function LandingPage() {
     return (
       <div className="product-card glass" key={p.id}>
         <div className={`product-photo${isCase ? " product-photo-portrait" : ""}`}>
-          <MediaFill image={p.image} label={p.name} />
+          <MediaFill image={p.image} label={p.name} fit={isCase ? "contain" : "cover"} />
         </div>
         <div>
           <div className="product-cat">{p.cat}</div>
