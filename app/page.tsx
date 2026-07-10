@@ -175,6 +175,7 @@ export default function LandingPage() {
       </div>
 
       <section className="section" id="shop">
+        <div className="section-kicker">Browse</div>
         <h2 className="section-title">Shop by category</h2>
         <div className="cat-grid">
           {CATEGORIES.map((cat) => (
@@ -195,7 +196,10 @@ export default function LandingPage() {
 
       <section className="section" id="products">
         <div className="section-header">
-          <h2 className="section-title">Featured products</h2>
+          <div>
+            <div className="section-kicker">Catalog</div>
+            <h2 className="section-title">Featured products</h2>
+          </div>
           {(activeCategory || query) && (
             <button
               className="section-link"
@@ -226,22 +230,70 @@ export default function LandingPage() {
       </section>
 
       <section className="section" id="story">
+        <div className="section-kicker">Reviews</div>
         <h2 className="section-title">What customers say</h2>
         <div className="testimonial-grid">
           {TESTIMONIALS.map((t) => (
             <div className="testimonial-card glass" key={t.name}>
+              <div className="testimonial-stars" aria-hidden="true">★★★★★</div>
               <div className="testimonial-quote">&ldquo;{t.quote}&rdquo;</div>
-              <div className="testimonial-name">— {t.name}</div>
+              <div className="testimonial-footer">
+                <div className="testimonial-avatar" aria-hidden="true">{t.name.charAt(0)}</div>
+                <div>
+                  <div className="testimonial-name">{t.name}</div>
+                  <div className="testimonial-verified">✓ Verified buyer</div>
+                </div>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
       <footer className="site-footer">
-        <div>© 2026 Lofty Store — mobile accessories, done right.</div>
-        <a className="footer-whatsapp" href={whatsappLink("Hi Lofty Store! I have a question.")} target="_blank" rel="noopener noreferrer">
-          Chat with us on WhatsApp
-        </a>
+        <div className="footer-inner">
+          <div className="footer-grid">
+            <div className="footer-col footer-brand-col">
+              <div className="footer-brand">Lofty Store</div>
+              <p className="footer-blurb">Genuine mobile accessories for every iPhone — cases, power banks, screen protection, car mounts and audio, delivered across Pakistan.</p>
+              <a className="footer-whatsapp-btn" href={whatsappLink("Hi Lofty Store! I have a question.")} target="_blank" rel="noopener noreferrer">
+                Chat on WhatsApp
+              </a>
+            </div>
+            <div className="footer-col">
+              <div className="footer-col-title">Shop</div>
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat.name}
+                  type="button"
+                  className="footer-link"
+                  onClick={() => {
+                    setActiveCategory(cat.name);
+                    scrollToProducts();
+                  }}
+                >
+                  {cat.name}
+                </button>
+              ))}
+            </div>
+            <div className="footer-col">
+              <div className="footer-col-title">Support</div>
+              <a
+                className="footer-link"
+                href={whatsappLink("Hi Lofty Store! I have a question.")}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Contact us
+              </a>
+              <div className="footer-static">Cash on Delivery</div>
+              <div className="footer-static">7-day easy replacement</div>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <span>© 2026 Lofty Store — mobile accessories, done right.</span>
+            <span>Made for iPhone owners across Pakistan</span>
+          </div>
+        </div>
       </footer>
     </>
   );
