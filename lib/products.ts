@@ -10,10 +10,10 @@ export type Product = {
 // Case variants cycle through these four real silicone-case colorways so the
 // catalog shows genuine style/color variety instead of one repeated photo.
 const CASE_COLORS = [
-  { name: "Blush Pink", image: "/img/case-blush.jpg" },
-  { name: "Charcoal", image: "/img/case-charcoal.jpg" },
-  { name: "Mint", image: "/img/case-mint.jpg" },
-  { name: "Coral", image: "/img/case-coral.jpg" },
+  { name: "Blush Pink", image: "/img/case-blush-v2.jpg" },
+  { name: "Charcoal", image: "/img/case-charcoal-v2.jpg" },
+  { name: "Mint", image: "/img/case-mint-v2.jpg" },
+  { name: "Coral", image: "/img/case-coral-v2.jpg" },
 ];
 
 // Prices in PKR, set to realistic Pakistani retail market rates for these
