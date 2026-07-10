@@ -9,14 +9,13 @@ export type Product = {
 
 // Case variants cycle through these four real silicone-case colorways so the
 // catalog shows genuine style/color variety instead of one repeated photo.
-// Cropped to the plain back panel only (no camera cutout) so a color swatch
-// never implies a specific camera layout that wouldn't match every iPhone
-// model it's used on.
+// Full case shown (every corner, uncropped) via a portrait photo box + contain
+// fit, so the whole product is visible instead of a zoomed-in fragment.
 const CASE_COLORS = [
-  { name: "Blush Pink", image: "/img/case-blush-v7.jpg" },
-  { name: "Charcoal", image: "/img/case-charcoal-v7.jpg" },
-  { name: "Mint", image: "/img/case-mint-v7.jpg" },
-  { name: "Coral", image: "/img/case-coral-v7.jpg" },
+  { name: "Blush Pink", image: "/img/case-blush-v8.jpg" },
+  { name: "Charcoal", image: "/img/case-charcoal-v8.jpg" },
+  { name: "Mint", image: "/img/case-mint-v8.jpg" },
+  { name: "Coral", image: "/img/case-coral-v8.jpg" },
 ];
 
 // Prices in PKR, set to realistic Pakistani retail market rates for these
