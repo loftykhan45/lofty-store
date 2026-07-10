@@ -38,6 +38,15 @@ git reset --hard "origin/$BRANCH"
 # otherwise delete them, wiping every order on every deploy.
 git clean -fd -e data -e node_modules -e .next
 
+# Next.js's on-disk image optimizer cache (.next/cache/images) is keyed by
+# request URL+params, not by the source file's content hash, and is served
+# unconditionally for its max-age (4h) once populated. Since public/img/*
+# assets get overwritten in place (same filename, new content) rather than
+# renamed, a stale cached thumbnail can outlive the file it was generated
+# from across a deploy. Clear it every deploy so a swapped-in photo is never
+# served stale — this doesn't touch the rest of the .next build cache.
+rm -rf .next/cache/images
+
 npm ci
 npm run build
 
