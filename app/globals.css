@@ -388,7 +388,7 @@ a { color: inherit; }
   color: #fff; font-size: 17px; font-weight: 700; margin-bottom: 16px;
   padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
-.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: start; }
 .product-card { padding: 18px; display: flex; flex-direction: column; gap: 16px; border-radius: 24px; transition: transform 0.15s ease, box-shadow 0.15s ease; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28); }
 @media (hover: hover) {
   .product-card:hover { box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42); }
