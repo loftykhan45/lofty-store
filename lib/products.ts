@@ -18,6 +18,14 @@ const CASE_COLORS = [
   { name: "Coral", image: "/img/case-coral-v8.jpg" },
 ];
 
+// Models with a real photo of the correct device shape (e.g. triple-camera
+// iPhone 11 Pro/Pro Max) override the generic colorway cycle above so the
+// card doesn't show a mismatched case silhouette (see iPhone X vs 11 mixup).
+const CASE_MODEL_OVERRIDES: Record<string, string> = {
+  "iPhone 11 Pro": "/img/case-11pro-v1.jpg",
+  "iPhone 11 Pro Max": "/img/case-11pro-v1.jpg",
+};
+
 // Prices in PKR, set to realistic Pakistani retail market rates for these
 // product categories (not a currency conversion of a placeholder USD price).
 export const PRODUCTS: Product[] = [
@@ -66,7 +74,7 @@ export const PRODUCTS: Product[] = [
     name: `${model} Case — ${CASE_COLORS[i % CASE_COLORS.length].name}`,
     cat: "Cases",
     price,
-    image: CASE_COLORS[i % CASE_COLORS.length].image,
+    image: CASE_MODEL_OVERRIDES[model] ?? CASE_COLORS[i % CASE_COLORS.length].image,
     series,
   })),
   ...(
