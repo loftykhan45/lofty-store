@@ -15,7 +15,7 @@ function Confirmation() {
     return (
       <div className="confirm-wrap">
         <div className="confirm-card glass">
-          <div className="confirm-title" style={{ fontSize: 26 }}>No recent order found</div>
+          <h1 className="confirm-title" style={{ fontSize: 26 }}>No recent order found</h1>
           <p className="confirm-copy">
             Looks like you got here directly. <Link href="/" style={{ color: "#fff", textDecoration: "underline" }}>Return to the store</Link> to place an order.
           </p>
@@ -36,7 +36,7 @@ function Confirmation() {
         <div className="confirm-badge">
           <span className="confirm-check">✓</span>
         </div>
-        <div className="confirm-title">Order confirmed</div>
+        <h1 className="confirm-title">Order confirmed</h1>
         <div className="confirm-copy">
           Thanks, {order.firstName} — your order is being prepared. Pay {money(order.total)} cash when it arrives.
           <br />A confirmation email has been sent to {order.email}
@@ -82,7 +82,18 @@ function Confirmation() {
 
       <div className="detail-card glass">
         <div className="detail-card-title">Shipping to</div>
-        <div className="ship-to-text">{order.firstName} {order.lastName}<br />{order.address}<br />{order.city}</div>
+        <div className="ship-to-text">
+          {order.firstName} {order.lastName}<br />
+          {order.address}<br />
+          {order.city}
+          {order.phone && (
+            <>
+              <br />
+              <span className="ship-to-phone">📞 {order.phone}</span>
+            </>
+          )}
+        </div>
+        {order.phone && <div className="field-hint">We&apos;ll call this number to confirm delivery.</div>}
       </div>
 
       <div className="confirm-actions">
