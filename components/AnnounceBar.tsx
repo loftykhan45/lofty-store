@@ -1,4 +1,5 @@
 import { ANNOUNCEMENTS } from "@/lib/products";
+import Icon from "@/components/Icon";
 
 export default function AnnounceBar() {
   const items = ANNOUNCEMENTS;
@@ -7,7 +8,7 @@ export default function AnnounceBar() {
       <div className="announce-track">
         {[...items, ...items].map((text, i) => (
           <span className="announce-item" key={i}>
-            <span className="announce-dot">✦</span>
+            <span className="announce-dot"><Icon name="sparkle" size={11} /></span>
             {text}
           </span>
         ))}
