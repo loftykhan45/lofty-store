@@ -20,6 +20,9 @@ const PATHS = {
   sparkle: <path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4L12 3z" />,
   chevronRight: <path d="M9 18l6-6-6-6" />,
   cart: <><circle cx="9" cy="20" r="1.5" /><circle cx="18" cy="20" r="1.5" /><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 8H6" /></>,
+  truck: <><path d="M1 3h13v13H1z" /><path d="M14 8h4l3 3v5h-7V8z" /><circle cx="5.5" cy="18.5" r="2" /><circle cx="17.5" cy="18.5" r="2" /></>,
+  shield: <><path d="M12 2l8 3.5v5.5c0 5-3.4 9.6-8 11-4.6-1.4-8-6-8-11V5.5L12 2z" /><path d="M9 12l2 2 4-4" /></>,
+  refresh: <><path d="M21 12a9 9 0 1 1-2.6-6.4" /><path d="M21 3v6h-6" /></>,
 } as const;
 
 export default function Icon({ name, size = 20, className }: IconProps) {
