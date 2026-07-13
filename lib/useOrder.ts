@@ -9,6 +9,7 @@ export type Order = {
   id: string;
   orderNumber: string;
   email: string;
+  phone: string;
   firstName: string;
   lastName: string;
   address: string;
