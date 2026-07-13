@@ -5,16 +5,36 @@ import Header from "@/components/Header";
 import Orbs from "@/components/Orbs";
 import AnnounceBar from "@/components/AnnounceBar";
 import FloatingCartButton from "@/components/FloatingCartButton";
+import { SITE_URL, SITE_NAME, organizationJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Lofty Store — Mobile accessories, refined",
-  description: "Cases, power banks, cables, screen protection, car mounts and airbuds — one clean aesthetic across your whole setup.",
+  // Without metadataBase, canonical and Open Graph URLs resolve relative and
+  // break in production — this is the single most-missed Next.js SEO setting.
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Buy Mobile Accessories in Pakistan — Cash on Delivery | Lofty Store",
+    template: `%s`,
+  },
+  description:
+    "Buy phone cases, power banks, cables, screen protectors, car mounts and airbuds in Pakistan. Cash on Delivery nationwide, genuine accessories, 7-day easy replacement.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    siteName: SITE_NAME,
+    locale: "en_PK",
+    type: "website",
+    url: SITE_URL,
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en-PK">
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
+        />
         <StoreProvider>
           <Orbs />
           <div className="page">
