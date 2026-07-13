@@ -5,6 +5,7 @@ type OrderRow = {
   id: string;
   order_number: string;
   email: string;
+  phone: string;
   first_name: string;
   last_name: string;
   address: string;
@@ -25,6 +26,7 @@ export async function GET() {
     id: row.id,
     orderNumber: row.order_number,
     email: row.email,
+    phone: row.phone,
     firstName: row.first_name,
     lastName: row.last_name,
     address: row.address,
