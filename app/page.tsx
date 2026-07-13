@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/lib/StoreProvider";
 import { PRODUCTS, CATEGORIES, TESTIMONIALS, money, whatsappProductLink, whatsappLink, type Product } from "@/lib/products";
 import MediaFill from "@/components/MediaFill";
+import Icon from "@/components/Icon";
 
 const MAX_SUGGESTIONS = 6;
 
@@ -130,7 +131,7 @@ export default function LandingPage() {
 
       <div className="search-wrap" ref={searchWrapRef}>
         <div className="search-box glass">
-          <span className="search-icon" aria-hidden="true">🔍</span>
+          <span className="search-icon" aria-hidden="true"><Icon name="search" size={18} /></span>
           <input
             className="search-input"
             type="search"
@@ -246,7 +247,7 @@ export default function LandingPage() {
                 <div className="testimonial-avatar" aria-hidden="true">{t.name.charAt(0)}</div>
                 <div>
                   <div className="testimonial-name">{t.name}</div>
-                  <div className="testimonial-verified">✓ Verified buyer</div>
+                  <div className="testimonial-verified"><Icon name="check" size={13} /> Verified buyer</div>
                 </div>
               </div>
             </div>
