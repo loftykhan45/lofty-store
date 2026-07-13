@@ -180,6 +180,28 @@ export default function LandingPage() {
         )}
       </div>
 
+      {/* Feature-Rich Showcase: the value props were previously buried in the
+          scrolling marquee. Promoting them to real blocks is the core of the
+          pattern — showcase the reasons to buy, don't just list products. */}
+      <section className="section feature-section" aria-label="Why shop with Lofty">
+        <div className="feature-blocks">
+          {[
+            { icon: "cash", title: "Cash on Delivery", body: "Pay in cash when your order reaches your door. No card needed." },
+            { icon: "truck", title: "Fast nationwide delivery", body: "2–7 days to every city in Pakistan, tracked the whole way." },
+            { icon: "shield", title: "Genuine accessories", body: "Sourced from real brands — never counterfeit, always tested." },
+            { icon: "refresh", title: "7-day easy replacement", body: "Not the right fit? Swap it within a week, no questions." },
+          ].map((f) => (
+            <div className="feature-block glass" key={f.title}>
+              <div className="feature-icon" aria-hidden="true">
+                <Icon name={f.icon as "cash" | "truck" | "shield" | "refresh"} size={22} />
+              </div>
+              <h3 className="feature-title">{f.title}</h3>
+              <p className="feature-body">{f.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="section" id="shop">
         <div className="section-kicker">Browse</div>
         <h2 className="section-title">Shop by category</h2>
@@ -233,6 +255,27 @@ export default function LandingPage() {
         ) : (
           <div className="product-grid">{filteredProducts.map(renderProductCard)}</div>
         )}
+      </section>
+
+      <section className="section" aria-label="Order on WhatsApp">
+        <div className="promo-band glass">
+          <div className="promo-band-copy">
+            <div className="section-kicker">Prefer to chat?</div>
+            <h2 className="promo-band-title">Order on WhatsApp in under a minute.</h2>
+            <p className="promo-band-body">
+              Send us the product you want and we&apos;ll confirm your order, price and delivery
+              date right there. Cash on Delivery, all over Pakistan.
+            </p>
+          </div>
+          <a
+            className="whatsapp-btn promo-band-cta"
+            href={whatsappLink("Hi Lofty Store! I'd like to place an order.")}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Chat on WhatsApp
+          </a>
+        </div>
       </section>
 
       <section className="section" id="story">
