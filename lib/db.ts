@@ -19,6 +19,7 @@ function init(): Database.Database {
       id TEXT PRIMARY KEY,
       order_number TEXT NOT NULL,
       email TEXT NOT NULL,
+      phone TEXT NOT NULL DEFAULT '',
       first_name TEXT NOT NULL,
       last_name TEXT NOT NULL,
       address TEXT NOT NULL,
@@ -33,10 +34,16 @@ function init(): Database.Database {
     );
   `);
 
-  // Orders tables created before the admin portal won't have this column yet.
+  // Existing databases predate some columns; add them in place rather than
+  // recreating the table, so live order history survives the deploy.
   const cols = db.prepare("PRAGMA table_info(orders)").all() as { name: string }[];
-  if (!cols.some((c) => c.name === "status")) {
+  const has = (name: string) => cols.some((c) => c.name === name);
+  if (!has("status")) {
     db.exec("ALTER TABLE orders ADD COLUMN status TEXT NOT NULL DEFAULT 'pending'");
+  }
+  // Cash on Delivery is unworkable without a number for the courier to call.
+  if (!has("phone")) {
+    db.exec("ALTER TABLE orders ADD COLUMN phone TEXT NOT NULL DEFAULT ''");
   }
 
   return db;
