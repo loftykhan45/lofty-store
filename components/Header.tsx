@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useStore } from "@/lib/StoreProvider";
 import CartDrawer from "@/components/CartDrawer";
+import Icon from "@/components/Icon";
 import { whatsappLink } from "@/lib/products";
 
 const NAV_LINKS = ["Shop", "Cases", "Powerbank", "Protection", "Car & Travel", "Audio"];
@@ -59,7 +60,7 @@ export default function Header() {
                 (pathname === "/order-status" && step === "Status");
               return (
                 <span key={step}>
-                  {i > 0 && <span className="sep">→</span>}
+                  {i > 0 && <span className="sep" aria-hidden="true"><Icon name="chevronRight" size={13} /></span>}
                   <span className={isCurrent ? "active" : ""} style={!isCurrent ? { opacity: 0.5 } : undefined}>{step}</span>
                 </span>
               );
@@ -87,7 +88,9 @@ export default function Header() {
             <span className={`cart-badge ${cartCount === 0 ? "hidden" : ""}`}>{cartCount}</span>
           </button>
           {isLanding && (
-            <button className="menu-btn" aria-label="Open menu" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>☰</button>
+            <button className="menu-btn" aria-label="Open menu" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              <Icon name="menu" size={18} />
+            </button>
           )}
         </div>
       </nav>
