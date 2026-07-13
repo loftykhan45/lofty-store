@@ -92,77 +92,98 @@ export default function CheckoutPage() {
         <div className="checkout-forms">
           <div className="form-card glass">
             <div className="form-card-title">Contact</div>
-            <input
-              className={`form-input ${errors.email ? "invalid" : ""}`}
-              type="email"
-              name="email"
-              autoComplete="email"
-              aria-label="Email address"
-              placeholder="Email address"
-              value={form.email}
-              onChange={(e) => setField("email", e.target.value)}
-              style={{ marginBottom: 12 }}
-            />
-            {errors.email && <div className="field-error" style={{ display: "block" }}>Enter a valid email address.</div>}
-            <input
-              className={`form-input ${errors.phone ? "invalid" : ""}`}
-              type="tel"
-              name="phone"
-              autoComplete="tel"
-              inputMode="tel"
-              aria-label="Phone number"
-              placeholder="Phone number (e.g. 0300 1234567)"
-              value={form.phone}
-              onChange={(e) => setField("phone", e.target.value)}
-            />
-            {errors.phone ? (
-              <div className="field-error" style={{ display: "block" }}>Enter a valid phone number.</div>
-            ) : (
-              <div className="field-hint">Our courier calls this number to confirm your Cash on Delivery order.</div>
-            )}
+            <div className="field">
+              <label className="field-label" htmlFor="email">Email address</label>
+              <input
+                id="email"
+                className={`form-input ${errors.email ? "invalid" : ""}`}
+                type="email"
+                name="email"
+                autoComplete="email"
+                placeholder="you@example.com"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
+                value={form.email}
+                onChange={(e) => setField("email", e.target.value)}
+              />
+              {errors.email && <div className="field-error" id="email-error" style={{ display: "block" }}>Enter a valid email address.</div>}
+            </div>
+            <div className="field">
+              <label className="field-label" htmlFor="phone">Phone number</label>
+              <input
+                id="phone"
+                className={`form-input ${errors.phone ? "invalid" : ""}`}
+                type="tel"
+                name="phone"
+                autoComplete="tel"
+                inputMode="tel"
+                placeholder="0300 1234567"
+                aria-invalid={!!errors.phone}
+                aria-describedby={errors.phone ? "phone-error" : "phone-hint"}
+                value={form.phone}
+                onChange={(e) => setField("phone", e.target.value)}
+              />
+              {errors.phone ? (
+                <div className="field-error" id="phone-error" style={{ display: "block" }}>Enter a valid phone number, e.g. 0300 1234567.</div>
+              ) : (
+                <div className="field-hint" id="phone-hint">Our courier calls this number to confirm your Cash on Delivery order.</div>
+              )}
+            </div>
           </div>
 
           <div className="form-card glass">
             <div className="form-card-title">Shipping address</div>
             <div className="form-row-2">
+              <div className="field">
+                <label className="field-label" htmlFor="firstName">First name</label>
+                <input
+                  id="firstName"
+                  className={`form-input ${errors.firstName ? "invalid" : ""}`}
+                  name="firstName"
+                  autoComplete="given-name"
+                  aria-invalid={!!errors.firstName}
+                  value={form.firstName}
+                  onChange={(e) => setField("firstName", e.target.value)}
+                />
+              </div>
+              <div className="field">
+                <label className="field-label" htmlFor="lastName">Last name</label>
+                <input
+                  id="lastName"
+                  className={`form-input ${errors.lastName ? "invalid" : ""}`}
+                  name="lastName"
+                  autoComplete="family-name"
+                  aria-invalid={!!errors.lastName}
+                  value={form.lastName}
+                  onChange={(e) => setField("lastName", e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="field">
+              <label className="field-label" htmlFor="address">Street address</label>
               <input
-                className={`form-input ${errors.firstName ? "invalid" : ""}`}
-                name="firstName"
-                autoComplete="given-name"
-                aria-label="First name"
-                placeholder="First name"
-                value={form.firstName}
-                onChange={(e) => setField("firstName", e.target.value)}
-              />
-              <input
-                className={`form-input ${errors.lastName ? "invalid" : ""}`}
-                name="lastName"
-                autoComplete="family-name"
-                aria-label="Last name"
-                placeholder="Last name"
-                value={form.lastName}
-                onChange={(e) => setField("lastName", e.target.value)}
+                id="address"
+                className={`form-input ${errors.address ? "invalid" : ""}`}
+                name="address"
+                autoComplete="street-address"
+                placeholder="House / street"
+                aria-invalid={!!errors.address}
+                value={form.address}
+                onChange={(e) => setField("address", e.target.value)}
               />
             </div>
-            <input
-              className={`form-input ${errors.address ? "invalid" : ""}`}
-              name="address"
-              autoComplete="street-address"
-              aria-label="Street address"
-              placeholder="Address"
-              value={form.address}
-              onChange={(e) => setField("address", e.target.value)}
-              style={{ marginBottom: 12 }}
-            />
-            <input
-              className={`form-input ${errors.city ? "invalid" : ""}`}
-              name="city"
-              autoComplete="address-level2"
-              aria-label="City"
-              placeholder="City"
-              value={form.city}
-              onChange={(e) => setField("city", e.target.value)}
-            />
+            <div className="field">
+              <label className="field-label" htmlFor="city">City</label>
+              <input
+                id="city"
+                className={`form-input ${errors.city ? "invalid" : ""}`}
+                name="city"
+                autoComplete="address-level2"
+                aria-invalid={!!errors.city}
+                value={form.city}
+                onChange={(e) => setField("city", e.target.value)}
+              />
+            </div>
           </div>
 
           <div className="form-card glass">
