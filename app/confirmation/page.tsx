@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useOrder } from "@/lib/useOrder";
 import { money } from "@/lib/products";
 import MediaFill from "@/components/MediaFill";
+import Icon from "@/components/Icon";
 
 function Confirmation() {
   const { order, loading } = useOrder();
@@ -89,7 +90,7 @@ function Confirmation() {
           {order.phone && (
             <>
               <br />
-              <span className="ship-to-phone">📞 {order.phone}</span>
+              <span className="ship-to-phone"><Icon name="phone" size={14} /> {order.phone}</span>
             </>
           )}
         </div>
