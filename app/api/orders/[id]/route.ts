@@ -8,6 +8,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
         id: string;
         order_number: string;
         email: string;
+        phone: string;
         first_name: string;
         last_name: string;
         address: string;
@@ -29,6 +30,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     id: row.id,
     orderNumber: row.order_number,
     email: row.email,
+    phone: row.phone,
     firstName: row.first_name,
     lastName: row.last_name,
     address: row.address,
