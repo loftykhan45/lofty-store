@@ -506,10 +506,12 @@ footer.site-footer { margin-top: 24px; border-top: 1px solid rgba(255, 255, 255,
 
 /* Vector icons replaced the old emoji, so anywhere an icon sits beside a label
    now needs real inline alignment instead of relying on the glyph baseline. */
+/* NB: .menu-btn is deliberately NOT in this list. It is display:none on desktop
+   and only revealed by the mobile media query, so setting display here would
+   un-hide it on every screen. It already centers its own contents. */
 .search-icon,
 .announce-dot,
 .nav-breadcrumb .sep,
-.menu-btn,
 .cart-drawer-back,
 .cart-line-close {
   display: inline-flex;
