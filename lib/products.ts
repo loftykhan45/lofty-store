@@ -54,8 +54,8 @@ const CASE_MODEL_OVERRIDES: Record<string, string> = {
 export const PRODUCTS: Product[] = [
   { id: "aerocase-clear", name: "AeroCase Clear", cat: "Cases", price: 450, image: "/img/category-cases.jpg" },
   { id: "magflow-charger", name: "MagFlow Charger", cat: "Powerbank", price: 1800, image: "/img/category-charging.jpg" },
-  { id: "armorglass-pro", name: "ArmorGlass Pro", cat: "Protection", price: 250, image: "/img/category-protection.png" },
-  { id: "drivemount-x", name: "DriveMount X", cat: "Car & Travel", price: 800, image: "/img/category-car.jpg" },
+  { id: "armorglass-pro", name: "ArmorGlass Pro", cat: "Protection", price: 250, image: "/img/protector.jpg" },
+  { id: "drivemount-x", name: "DriveMount X", cat: "Car & Travel", price: 800, image: "/img/car-mount.jpg" },
   { id: "powercell-10k", name: "PowerCell 10K", cat: "Powerbank", price: 2800, image: "/img/product-powercell.jpg" },
   { id: "braidlink-cable", name: "BraidLink Cable", cat: "Powerbank", price: 350, image: "/img/product-cable.jpg" },
   ...(
@@ -102,58 +102,59 @@ export const PRODUCTS: Product[] = [
   })),
   ...(
     [
-      ["Anker", "PowerCore 10000mAh", 3200],
-      ["Xiaomi", "Mi Power Bank 3 10000mAh", 2600],
-      ["Baseus", "Bipow 10000mAh", 2400],
-      ["Romoss", "Sense 8 20000mAh", 3000],
-      ["Faster", "FPB-i 10000mAh", 1800],
-      ["Joyroom", "JR-PBX01 10000mAh", 2000],
-      ["Remax", "RPP-53 10000mAh", 1900],
-      ["Eloop", "E37 20000mAh", 2200],
-      ["Proda", "Chicken 10000mAh", 2100],
-      ["Dany Technologies", "PB-118 10000mAh", 1700],
-    ] as [string, string, number][]
-  ).map(([brand, model, price]) => ({
+      ["Anker", "PowerCore 10000mAh", 3200, "/img/pb-anker.jpg"],
+      ["Xiaomi", "Mi Power Bank 3 10000mAh", 2600, "/img/pb-xiaomi.jpg"],
+      ["Baseus", "Bipow 10000mAh", 2400, "/img/pb-baseus.jpg"],
+      ["Romoss", "Sense 8 20000mAh", 3000, "/img/pb-romoss.jpg"],
+      ["Faster", "FPB-i 10000mAh", 1800, "/img/pb-faster.jpg"],
+      ["Joyroom", "JR-PBX01 10000mAh", 2000, "/img/pb-joyroom.jpg"],
+      ["Remax", "RPP-53 10000mAh", 1900, "/img/pb-remax.jpg"],
+      ["Eloop", "E37 20000mAh", 2200, "/img/pb-eloop.jpg"],
+      ["Proda", "Chicken 10000mAh", 2100, "/img/pb-proda.jpg"],
+      ["Dany Technologies", "PB-118 10000mAh", 1700, "/img/pb-dany.jpg"],
+    ] as [string, string, number, string][]
+  ).map(([brand, model, price, image]) => ({
     id: `powerbank-${brand.toLowerCase().replace(/\s+/g, "-")}`,
     name: `${brand} ${model}`,
     cat: "Powerbank",
     price,
-    image: "/img/product-powercell.jpg",
+    image,
     series: "Power Banks",
   })),
   ...(
     [
-      ["USB-A to Lightning Cable 1m", 250],
-      ["USB-A to Type-C Cable 1m", 250],
-      ["Type-C to Type-C Cable 1m", 280],
-      ["Braided USB-A to Type-C Cable 2m", 450],
-      ["20W USB-C Power Adapter", 900],
-      ["35W Dual-Port Fast Charger Adapter", 1600],
-      ["65W GaN Charger Adapter", 3200],
-    ] as [string, number][]
-  ).map(([name, price]) => ({
+      ["USB-A to Lightning Cable 1m", 250, "/img/cable-lightning.jpg"],
+      ["USB-A to Type-C Cable 1m", 250, "/img/cable-usbc.jpg"],
+      ["Type-C to Type-C Cable 1m", 280, "/img/cable-usbc.jpg"],
+      ["Braided USB-A to Type-C Cable 2m", 450, "/img/cable-usbc.jpg"],
+      ["20W USB-C Power Adapter", 900, "/img/adapter-20w.jpg"],
+      ["35W Dual-Port Fast Charger Adapter", 1600, "/img/adapter-35w.jpg"],
+      ["65W GaN Charger Adapter", 3200, "/img/adapter-65w.jpg"],
+    ] as [string, number, string][]
+  ).map(([name, price, image]) => ({
     id: `cable-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`,
     name,
     cat: "Powerbank",
     price,
-    image: "/img/product-cable.jpg",
+    image,
     series: "Cables & Adapters",
   })),
   ...(
     [
-      ["Lofty Airbuds Classic", 1800],
-      ["QCY T13 Wireless Earbuds", 2200],
-      ["Haylou GT7 Wireless Earbuds", 2800],
-      ["Xiaomi Redmi Buds 5", 3200],
-      ["Anker Soundcore P20i", 3600],
-      ["Lofty Airbuds Pro ANC", 4500],
-    ] as [string, number][]
-  ).map(([name, price]) => ({
+      // The two Lofty own-brand products deliberately use the logo-free photos.
+      ["Lofty Airbuds Classic", 1800, "/img/audio-1.jpg"],
+      ["QCY T13 Wireless Earbuds", 2200, "/img/audio-2.jpg"],
+      ["Haylou GT7 Wireless Earbuds", 2800, "/img/audio-3.jpg"],
+      ["Xiaomi Redmi Buds 5", 3200, "/img/audio-4.jpg"],
+      ["Anker Soundcore P20i", 3600, "/img/audio-5.jpg"],
+      ["Lofty Airbuds Pro ANC", 4500, "/img/audio-6.jpg"],
+    ] as [string, number, string][]
+  ).map(([name, price, image]) => ({
     id: `audio-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`,
     name,
     cat: "Audio",
     price,
-    image: "/img/category-protection.png",
+    image,
     series: "Airbuds",
   })),
   ...(
@@ -195,7 +196,7 @@ export const PRODUCTS: Product[] = [
     name: `${model} Screen Protector`,
     cat: "Protection",
     price,
-    image: "/img/category-protection.png",
+    image: "/img/protector.jpg",
     series,
   })),
   ...(
@@ -237,17 +238,17 @@ export const PRODUCTS: Product[] = [
     name: `${model} Car Mount`,
     cat: "Car & Travel",
     price,
-    image: "/img/category-car.jpg",
+    image: "/img/car-mount.jpg",
     series,
   })),
 ];
 
 export const CATEGORIES = [
   { name: "Cases", image: "/img/category-cases.jpg" },
-  { name: "Powerbank", image: "/img/category-charging.jpg" },
-  { name: "Protection", image: "/img/category-protection.png" },
+  { name: "Powerbank", image: "/img/pb-anker.jpg" },
+  { name: "Protection", image: "/img/category-protection.jpg" },
   { name: "Car & Travel", image: "/img/category-car.jpg" },
-  { name: "Audio", image: "/img/category-protection.png" },
+  { name: "Audio", image: "/img/category-audio.jpg" },
 ];
 
 export const TESTIMONIALS = [
