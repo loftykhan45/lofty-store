@@ -15,6 +15,14 @@
   /* One knob for the content column, so every section widens together on
      large monitors instead of stranding ~370px of dead margin either side. */
   --shell: 1180px;
+
+  /* Feature-Rich Showcase (ui-ux-pro-max, E-commerce): block-based layout with
+     generous gaps, large type, and a card lift+scale on hover. Palette stays
+     the existing glass system — the skill's own rule is
+     `if_luxury -> switch-to-liquid-glass`, and it lists vibrant/playful colors
+     as an anti-pattern for a premium store. */
+  --block-gap: 48px;
+  --lift: 200ms;
 }
 
 @media (min-width: 1500px) {
@@ -385,11 +393,47 @@ a { color: inherit; }
 .search-suggestion-price { color: rgba(255, 255, 255, 0.78); font-size: 13px; font-weight: 700; flex-shrink: 0; }
 .search-suggestion-empty { color: rgba(255, 255, 255, 0.53); font-size: 13px; padding: 14px 10px; text-align: center; }
 
+/* --- Feature-Rich Showcase blocks --- */
+.feature-section { padding-top: 8px; padding-bottom: var(--block-gap); }
+.feature-blocks {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.feature-block {
+  padding: 26px 24px;
+  border-radius: 22px;
+  transition: transform var(--lift) ease, box-shadow var(--lift) ease;
+}
+.feature-icon {
+  width: 44px; height: 44px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-gradient); color: var(--accent-text);
+  margin-bottom: 16px;
+}
+.feature-title { color: #fff; font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+.feature-body { color: rgba(255, 255, 255, 0.68); font-size: 14px; line-height: 1.55; }
+@media (hover: hover) {
+  .feature-block:hover { transform: translateY(-4px); box-shadow: 0 16px 38px rgba(0, 0, 0, 0.42); }
+}
+
+/* --- promo band --- */
+.promo-band {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 28px; flex-wrap: wrap;
+  padding: 40px; border-radius: 28px;
+}
+.promo-band-title { color: #fff; font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; }
+.promo-band-body { color: rgba(255, 255, 255, 0.72); font-size: 15px; line-height: 1.6; max-width: 560px; }
+.promo-band-cta { padding: 15px 28px; font-size: 15px; flex: none; }
+
 /* generic section */
 .section { max-width: var(--shell); margin: 0 auto; padding: 8px 28px 56px; }
 .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 22px; gap: 16px; }
 .section-kicker { color: rgba(255, 255, 255, 0.62); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-.section-title { color: #fff; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 22px; }
+/* Showcase pattern calls for large type (32px+) and a clear hierarchy step
+   down from the hero, rather than headings that barely outrank body copy. */
+.section-title { color: #fff; font-size: 34px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 24px; }
 .section-header .section-title { margin-bottom: 0; }
 .section-link { color: rgba(255, 255, 255, 0.68); font-size: 14px; font-weight: 600; cursor: pointer; background: none; border: none; }
 
@@ -399,8 +443,9 @@ a { color: inherit; }
 .cat-card.glass { border: 1px solid var(--glass-border); }
 .cat-card.active { border: 2px solid var(--glass-border-active) !important; }
 @media (hover: hover) {
-  .cat-card:hover { transform: translateY(-3px); border-color: rgba(255, 255, 255, 0.32); }
-  .product-card:hover { transform: translateY(-3px); }
+  /* Skill's key effect for e-commerce: "Card hover lift (200ms) + Scale". */
+  .cat-card:hover { transform: translateY(-4px) scale(1.02); border-color: rgba(255, 255, 255, 0.32); }
+  .product-card:hover { transform: translateY(-4px) scale(1.02); }
 }
 .cat-image { position: relative; height: 110px; border-radius: 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .cat-name { color: #fff; font-size: 15px; font-weight: 600; }
@@ -412,7 +457,7 @@ a { color: inherit; }
   padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
 .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: start; }
-.product-card { padding: 18px; display: flex; flex-direction: column; gap: 16px; border-radius: 24px; transition: transform 0.15s ease, box-shadow 0.15s ease; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28); }
+.product-card { padding: 18px; display: flex; flex-direction: column; gap: 16px; border-radius: 24px; transition: transform var(--lift) ease, box-shadow var(--lift) ease; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28); }
 @media (hover: hover) {
   .product-card:hover { box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42); }
 }
@@ -650,6 +695,11 @@ footer.site-footer { margin-top: 24px; border-top: 1px solid rgba(255, 255, 255,
   .hero { grid-template-columns: 1fr; padding: 32px; }
   .hero-title { font-size: 38px; }
   .cat-grid, .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .feature-blocks { grid-template-columns: repeat(2, 1fr); }
+  .promo-band { padding: 30px; }
+  .promo-band-title { font-size: 26px; }
+  .promo-band-cta { width: 100%; }
+  .section-title { font-size: 28px; }
   .testimonial-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   .nav { padding: 12px 18px; }
@@ -676,6 +726,8 @@ footer.site-footer { margin-top: 24px; border-top: 1px solid rgba(255, 255, 255,
   .nav-brand { white-space: nowrap; }
 }
 @media (max-width: 480px) {
+  .feature-blocks { grid-template-columns: 1fr; gap: 12px; }
+  .feature-block { padding: 20px; }
   .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .product-card { padding: 12px; gap: 10px; border-radius: 18px; }
