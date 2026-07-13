@@ -7,8 +7,9 @@ type CartLine = { id: string; qty: number };
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { email, firstName, lastName, address, city, shippingIndex, cart } = body as {
+  const { email, phone, firstName, lastName, address, city, shippingIndex, cart } = body as {
     email: string;
+    phone: string;
     firstName: string;
     lastName: string;
     address: string;
@@ -17,8 +18,14 @@ export async function POST(req: NextRequest) {
     cart: CartLine[];
   };
 
-  if (!email || !firstName || !lastName || !address || !city || !Array.isArray(cart) || cart.length === 0) {
+  if (!email || !phone || !firstName || !lastName || !address || !city || !Array.isArray(cart) || cart.length === 0) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  }
+
+  // Courier needs a reachable number for COD; reject obvious junk server-side
+  // rather than trusting the client-side check alone.
+  if (phone.replace(/\D/g, "").length < 10) {
+    return NextResponse.json({ error: "Invalid phone number" }, { status: 400 });
   }
 
   const shipping = SHIPPING_OPTIONS[shippingIndex] ?? SHIPPING_OPTIONS[0];
@@ -44,13 +51,14 @@ export async function POST(req: NextRequest) {
 
   getDb()
     .prepare(
-      `INSERT INTO orders (id, order_number, email, first_name, last_name, address, city, shipping_name, shipping_price, subtotal, total, lines_json, placed_at)
-       VALUES (@id, @orderNumber, @email, @firstName, @lastName, @address, @city, @shippingName, @shippingPrice, @subtotal, @total, @linesJson, @placedAt)`
+      `INSERT INTO orders (id, order_number, email, phone, first_name, last_name, address, city, shipping_name, shipping_price, subtotal, total, lines_json, placed_at)
+       VALUES (@id, @orderNumber, @email, @phone, @firstName, @lastName, @address, @city, @shippingName, @shippingPrice, @subtotal, @total, @linesJson, @placedAt)`
     )
     .run({
       id,
       orderNumber,
       email,
+      phone,
       firstName,
       lastName,
       address,
