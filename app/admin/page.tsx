@@ -77,7 +77,7 @@ export default function AdminPage() {
             <thead>
               <tr>
                 <th>Order</th>
-                <th>Customer</th>
+                <th>Customer &amp; phone</th>
                 <th>City</th>
                 <th>Items</th>
                 <th>Total</th>
@@ -95,7 +95,17 @@ export default function AdminPage() {
                       <div className="admin-order-number">{o.orderNumber}</div>
                       <div className="admin-order-email">{o.email}</div>
                     </td>
-                    <td>{o.firstName} {o.lastName}<div className="admin-order-address">{o.address}</div></td>
+                    <td>
+                      {o.firstName} {o.lastName}
+                      {o.phone ? (
+                        <div className="admin-order-phone">
+                          <a href={`tel:${o.phone.replace(/[^\d+]/g, "")}`}>{o.phone}</a>
+                        </div>
+                      ) : (
+                        <div className="admin-order-phone admin-order-phone-missing">no phone on file</div>
+                      )}
+                      <div className="admin-order-address">{o.address}</div>
+                    </td>
                     <td>{o.city}</td>
                     <td>{o.lines.reduce((s, l) => s + l.qty, 0)} item(s)</td>
                     <td>{money(o.total)}</td>
