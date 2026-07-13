@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/lib/StoreProvider";
 import { PRODUCTS, CATEGORIES, TESTIMONIALS, money, whatsappProductLink, whatsappLink, type Product } from "@/lib/products";
+import Link from "next/link";
 import MediaFill from "@/components/MediaFill";
 import Icon from "@/components/Icon";
 
@@ -70,12 +71,16 @@ export default function LandingPage() {
     const isCase = p.cat === "Cases";
     return (
       <div className="product-card glass" key={p.id}>
-        <div className={`product-photo${isCase ? " product-photo-portrait" : ""}`}>
-          <MediaFill image={p.image} label={p.name} fit={isCase ? "contain" : "cover"} />
-        </div>
+        {/* Link the photo + name to the product page. This is the internal
+            linking that lets crawl authority reach all 122 product URLs. */}
+        <Link href={`/product/${p.id}`} className="product-link">
+          <div className={`product-photo${isCase ? " product-photo-portrait" : ""}`}>
+            <MediaFill image={p.image} label={p.name} fit={isCase ? "contain" : "cover"} />
+          </div>
+        </Link>
         <div>
           <div className="product-cat">{p.cat}</div>
-          <div className="product-name">{p.name}</div>
+          <Link href={`/product/${p.id}`} className="product-name product-name-link">{p.name}</Link>
           <div className="product-price-row">
             {money(p.price)}
             {qty > 0 ? (
