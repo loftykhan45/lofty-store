@@ -33,7 +33,7 @@ function OrderStatus() {
     return (
       <div className="confirm-wrap">
         <div className="confirm-card glass">
-          <div className="confirm-title" style={{ fontSize: 26 }}>No recent order found</div>
+          <h1 className="confirm-title" style={{ fontSize: 26 }}>No recent order found</h1>
           <p className="confirm-copy">
             Place an order to see its status here. <Link href="/" style={{ color: "#fff", textDecoration: "underline" }}>Return to the store</Link>.
           </p>
@@ -48,6 +48,7 @@ function OrderStatus() {
 
   return (
     <div className="confirm-wrap">
+      <h1 className="status-page-title">Order status</h1>
       <div className="confirm-card glass" style={{ textAlign: "left", padding: 36 }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12, marginBottom: 26, flexWrap: "wrap" }}>
           <div>
