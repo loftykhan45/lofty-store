@@ -12,6 +12,13 @@
   --text-muted: rgba(255, 255, 255, 0.48);
   --accent-gradient: linear-gradient(135deg, #3b7dfa, #1f4fc4);
   --accent-text: #ffffff;
+  /* One knob for the content column, so every section widens together on
+     large monitors instead of stranding ~370px of dead margin either side. */
+  --shell: 1180px;
+}
+
+@media (min-width: 1500px) {
+  :root { --shell: 1360px; }
 }
 
 body {
@@ -130,7 +137,7 @@ a { color: inherit; }
 /* nav */
 .nav {
   position: static; z-index: 20;
-  margin: 20px auto; max-width: 1180px;
+  margin: 20px auto; max-width: var(--shell);
   padding: 16px 28px;
   display: flex; align-items: center; justify-content: space-between;
   border-radius: 24px;
@@ -306,7 +313,7 @@ a { color: inherit; }
 .floating-cart-btn .cart-badge { top: -4px; right: -4px; }
 
 /* hero */
-.hero-section { max-width: 1180px; margin: 0 auto; padding: 56px 28px 64px; }
+.hero-section { max-width: var(--shell); margin: 0 auto; padding: 56px 28px 64px; }
 .hero {
   padding: 48px; border-radius: 36px;
   display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
@@ -328,7 +335,7 @@ a { color: inherit; }
 .swatch-label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: rgba(255, 255, 255, 0.68); }
 
 /* search */
-.search-wrap { position: relative; max-width: 1180px; margin: 0 auto; padding: 0 28px 8px; z-index: 15; }
+.search-wrap { position: relative; max-width: var(--shell); margin: 0 auto; padding: 0 28px 8px; z-index: 15; }
 .search-box {
   display: flex; align-items: center; gap: 12px;
   padding: 14px 20px; border-radius: 999px;
@@ -363,7 +370,7 @@ a { color: inherit; }
 .search-suggestion-empty { color: rgba(255, 255, 255, 0.53); font-size: 13px; padding: 14px 10px; text-align: center; }
 
 /* generic section */
-.section { max-width: 1180px; margin: 0 auto; padding: 8px 28px 56px; }
+.section { max-width: var(--shell); margin: 0 auto; padding: 8px 28px 56px; }
 .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 22px; gap: 16px; }
 .section-kicker { color: rgba(255, 255, 255, 0.44); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
 .section-title { color: #fff; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 22px; }
@@ -427,7 +434,7 @@ a { color: inherit; }
 
 /* footer */
 footer.site-footer { margin-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 56px 28px 28px; }
-.footer-inner { max-width: 1180px; margin: 0 auto; }
+.footer-inner { max-width: var(--shell); margin: 0 auto; }
 .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; padding-bottom: 36px; }
 .footer-brand { color: #fff; font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; }
 .footer-blurb { color: rgba(255, 255, 255, 0.56); font-size: 13.5px; line-height: 1.7; max-width: 320px; margin-bottom: 20px; }
@@ -454,7 +461,7 @@ footer.site-footer { margin-top: 24px; border-top: 1px solid rgba(255, 255, 255,
 
 /* checkout */
 .checkout-title { color: #fff; font-size: 38px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 32px; }
-.checkout-wrap { max-width: 1180px; margin: 0 auto; padding: 36px 28px 80px; }
+.checkout-wrap { max-width: var(--shell); margin: 0 auto; padding: 36px 28px 80px; }
 .checkout-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: start; }
 .checkout-forms { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 .form-card { padding: 26px; border-radius: 24px; }
@@ -467,6 +474,9 @@ footer.site-footer { margin-top: 24px; border-top: 1px solid rgba(255, 255, 255,
 .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
 .form-input + .form-input { margin-top: 0; }
 .field-error { color: oklch(0.7 0.18 25); font-size: 12px; margin-top: 6px; display: none; }
+.field-hint { color: rgba(255, 255, 255, 0.53); font-size: 12px; margin-top: 6px; }
+.status-page-title { color: #fff; font-size: 30px; font-weight: 700; margin-bottom: 20px; }
+.ship-to-phone { color: #fff; font-weight: 600; }
 .form-input.invalid { border-color: oklch(0.7 0.18 25); }
 
 .ship-option {
@@ -500,7 +510,7 @@ footer.site-footer { margin-top: 24px; border-top: 1px solid rgba(255, 255, 255,
 .secure-note { color: rgba(255, 255, 255, 0.48); font-size: 12px; text-align: center; }
 
 /* admin */
-.admin-wrap { max-width: 1180px; margin: 0 auto; padding: 36px 28px 80px; }
+.admin-wrap { max-width: var(--shell); margin: 0 auto; padding: 36px 28px 80px; }
 .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
 .admin-title { color: #fff; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
 .admin-error { color: oklch(0.7 0.18 25); font-size: 14px; margin-bottom: 16px; }
@@ -519,6 +529,11 @@ footer.site-footer { margin-top: 24px; border-top: 1px solid rgba(255, 255, 255,
 .admin-table tr:last-child td { border-bottom: none; }
 .admin-order-number { color: #fff; font-weight: 700; }
 .admin-order-email { color: rgba(255, 255, 255, 0.53); font-size: 12px; }
+.admin-order-phone { font-size: 13px; margin-top: 2px; }
+.admin-order-phone a { color: #7fd6a3; text-decoration: none; font-weight: 600; }
+.admin-order-phone a:hover { text-decoration: underline; }
+/* Orders placed before the phone field existed have nothing to call. */
+.admin-order-phone-missing { color: oklch(0.7 0.18 25); font-weight: 600; }
 .admin-order-address { color: rgba(255, 255, 255, 0.53); font-size: 12px; margin-top: 2px; max-width: 220px; }
 .admin-actions { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
 .admin-action-btn { padding: 8px 14px; font-size: 12px; white-space: nowrap; }
@@ -603,6 +618,12 @@ footer.site-footer { margin-top: 24px; border-top: 1px solid rgba(255, 255, 255,
 @media (max-width: 640px) {
   .confirm-title { font-size: 28px; }
   .confirm-card, .detail-card { padding: 24px; }
+  /* The checkout/confirmation nav packs brand + breadcrumb + WhatsApp + Cart
+     into one bar. Below 640px that forced "Lofty Store" to wrap onto two lines
+     and pushed the breadcrumb under the WhatsApp button. The breadcrumb is the
+     least essential of the four, so it goes; the rest then fit on one line. */
+  .nav-breadcrumb { display: none; }
+  .nav-brand { white-space: nowrap; }
 }
 @media (max-width: 480px) {
   .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -620,4 +641,75 @@ footer.site-footer { margin-top: 24px; border-top: 1px solid rgba(255, 255, 255,
   .hero-image { max-width: 220px; }
   .section { padding: 4px 18px 40px; }
   .hero-section { padding: 40px 18px 48px; }
+}
+
+/* Wide screens.
+   There are 5 categories, so a 4-up grid stranded "Audio" alone on a second
+   row; 5 columns puts them in one clean row. The product grid gains a 4th
+   column once the shell is wide enough that 3 cards would look stretched. */
+@media (min-width: 1100px) {
+  .cat-grid { grid-template-columns: repeat(5, 1fr); }
+}
+@media (min-width: 1400px) {
+  .product-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Touch targets.
+   On coarse pointers every control needs ~44px of height to be comfortably
+   tappable; several were 33-38px. Inline text links inside a sentence are
+   deliberately left alone — enlarging those would break the prose. */
+@media (max-width: 900px), (pointer: coarse) {
+  .pill,
+  .whatsapp-btn,
+  .menu-btn,
+  .cart-btn,
+  .add-btn,
+  .cart-drawer-back,
+  .cart-drawer-empty,
+  .cart-continue-btn,
+  .cart-checkout-btn,
+  .cart-whatsapp-btn,
+  .qty-stepper button,
+  .cart-line-close,
+  .pay-btn {
+    min-height: 44px;
+  }
+  .menu-btn,
+  .cart-drawer-back,
+  .cart-line-close,
+  .qty-stepper button {
+    min-width: 44px;
+  }
+  .search-input {
+    min-height: 44px;
+    /* iOS Safari zooms the whole page when a focused input is under 16px. */
+    font-size: 16px;
+  }
+  .form-input {
+    min-height: 48px;
+    font-size: 16px;
+  }
+  /* Standalone links that act as buttons: give them real height rather than
+     the line-box they inherit from their text. */
+  .nav-brand,
+  .footer-whatsapp-btn,
+  .admin-cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  /* Footer nav is a stack of links; pad each row out to a tappable band. */
+  .footer-link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    width: 100%;
+    text-align: left;
+  }
+  /* Per-card "Order on WhatsApp" is a text link, so grow its hit area with
+     padding instead of a box that would look like a second button. */
+  .whatsapp-btn-sm {
+    padding: 14px 0;
+    min-height: 44px;
+  }
 }
