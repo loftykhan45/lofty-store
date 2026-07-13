@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useStore } from "@/lib/StoreProvider";
 import { PRODUCTS, money, whatsappCartLink } from "@/lib/products";
 import MediaFill from "@/components/MediaFill";
+import Icon from "@/components/Icon";
 
 export default function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { cart, removeFromCart, setQty, clearCart, cartCount, cartSubtotal } = useStore();
@@ -19,7 +20,9 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
       <div className={`cart-overlay ${open ? "open" : ""}`} onClick={onClose} />
       <aside className={`cart-drawer ${open ? "open" : ""}`} aria-label="Shopping cart">
         <div className="cart-drawer-header">
-          <button className="cart-drawer-back" aria-label="Close cart" onClick={onClose}>←</button>
+          <button className="cart-drawer-back" aria-label="Close cart" onClick={onClose}>
+            <Icon name="arrowLeft" size={18} />
+          </button>
           <div>
             <div className="cart-drawer-title">Your Cart</div>
             <div className="cart-drawer-subtitle">
@@ -61,7 +64,9 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
                     </div>
                   </div>
                   <div className="cart-line-right">
-                    <button className="cart-line-close" aria-label={`Remove ${line.product.name}`} onClick={() => removeFromCart(line.product.id)}>×</button>
+                    <button className="cart-line-close" aria-label={`Remove ${line.product.name}`} onClick={() => removeFromCart(line.product.id)}>
+                      <Icon name="close" size={15} />
+                    </button>
                     <div className="cart-line-price">{money(line.subtotal)}</div>
                   </div>
                 </div>
@@ -83,7 +88,7 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
               </div>
             </div>
 
-            <div className="cart-note">💵 Cash on Delivery available on every order.</div>
+            <div className="cart-note"><Icon name="cash" size={16} /> Cash on Delivery available on every order.</div>
 
             <a
               className="cart-whatsapp-btn"
@@ -94,7 +99,9 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
               Order on WhatsApp instead
             </a>
 
-            <button className="cart-continue-btn" onClick={onClose}>← Continue shopping</button>
+            <button className="cart-continue-btn" onClick={onClose}>
+              <Icon name="arrowLeft" size={15} /> Continue shopping
+            </button>
           </>
         )}
 
