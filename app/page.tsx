@@ -130,10 +130,12 @@ export default function LandingPage() {
 
       <div className="search-wrap" ref={searchWrapRef}>
         <div className="search-box glass">
-          <span className="search-icon">🔍</span>
+          <span className="search-icon" aria-hidden="true">🔍</span>
           <input
             className="search-input"
             type="search"
+            name="q"
+            aria-label="Search products"
             placeholder="Search products — try “case” or “charger”"
             value={query}
             onChange={(e) => {
