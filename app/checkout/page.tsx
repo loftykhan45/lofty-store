@@ -13,7 +13,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { cart, clearCart } = useStore();
   const [shippingIndex, setShippingIndex] = useState(0);
-  const [form, setForm] = useState({ email: "", firstName: "", lastName: "", address: "", city: "" });
+  const [form, setForm] = useState({ email: "", phone: "", firstName: "", lastName: "", address: "", city: "" });
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -40,6 +40,10 @@ export default function CheckoutPage() {
   function validate(): boolean {
     const next: Errors = {};
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = true;
+    // Pakistani mobile numbers are 11 digits local (03xx…) or 12 with the 92
+    // country code. Accept either, ignoring spaces/dashes the user may type.
+    const digits = form.phone.replace(/\D/g, "");
+    if (digits.length < 10 || digits.length > 13) next.phone = true;
     (["firstName", "lastName", "address", "city"] as const).forEach((k) => {
       if (!form[k].trim()) next[k] = true;
     });
@@ -91,11 +95,31 @@ export default function CheckoutPage() {
             <input
               className={`form-input ${errors.email ? "invalid" : ""}`}
               type="email"
+              name="email"
+              autoComplete="email"
+              aria-label="Email address"
               placeholder="Email address"
               value={form.email}
               onChange={(e) => setField("email", e.target.value)}
+              style={{ marginBottom: 12 }}
             />
             {errors.email && <div className="field-error" style={{ display: "block" }}>Enter a valid email address.</div>}
+            <input
+              className={`form-input ${errors.phone ? "invalid" : ""}`}
+              type="tel"
+              name="phone"
+              autoComplete="tel"
+              inputMode="tel"
+              aria-label="Phone number"
+              placeholder="Phone number (e.g. 0300 1234567)"
+              value={form.phone}
+              onChange={(e) => setField("phone", e.target.value)}
+            />
+            {errors.phone ? (
+              <div className="field-error" style={{ display: "block" }}>Enter a valid phone number.</div>
+            ) : (
+              <div className="field-hint">Our courier calls this number to confirm your Cash on Delivery order.</div>
+            )}
           </div>
 
           <div className="form-card glass">
@@ -103,12 +127,18 @@ export default function CheckoutPage() {
             <div className="form-row-2">
               <input
                 className={`form-input ${errors.firstName ? "invalid" : ""}`}
+                name="firstName"
+                autoComplete="given-name"
+                aria-label="First name"
                 placeholder="First name"
                 value={form.firstName}
                 onChange={(e) => setField("firstName", e.target.value)}
               />
               <input
                 className={`form-input ${errors.lastName ? "invalid" : ""}`}
+                name="lastName"
+                autoComplete="family-name"
+                aria-label="Last name"
                 placeholder="Last name"
                 value={form.lastName}
                 onChange={(e) => setField("lastName", e.target.value)}
@@ -116,6 +146,9 @@ export default function CheckoutPage() {
             </div>
             <input
               className={`form-input ${errors.address ? "invalid" : ""}`}
+              name="address"
+              autoComplete="street-address"
+              aria-label="Street address"
               placeholder="Address"
               value={form.address}
               onChange={(e) => setField("address", e.target.value)}
@@ -123,6 +156,9 @@ export default function CheckoutPage() {
             />
             <input
               className={`form-input ${errors.city ? "invalid" : ""}`}
+              name="city"
+              autoComplete="address-level2"
+              aria-label="City"
               placeholder="City"
               value={form.city}
               onChange={(e) => setField("city", e.target.value)}
