@@ -15,6 +15,7 @@ import ProductBuy from "@/components/ProductBuy";
 import Icon from "@/components/Icon";
 import Stars from "@/components/Stars";
 import { reviewsForProduct, summaryFor } from "@/lib/reviews";
+import { CATEGORY_PAGES } from "@/lib/categories";
 
 // Reviews live in SQLite and change as customers post them, so these pages are
 // rendered per request rather than frozen at build time. They stay fully
@@ -65,6 +66,7 @@ export default async function ProductPage({
 
   const reviews = reviewsForProduct(product.id);
   const summary = summaryFor(product.id);
+  const categoryPage = CATEGORY_PAGES.find((c) => c.cat === product.cat);
 
   return (
     <div className="pdp-wrap">
@@ -84,7 +86,14 @@ export default async function ProductPage({
       <nav className="pdp-crumbs" aria-label="Breadcrumb">
         <Link href="/">Home</Link>
         <span className="sep" aria-hidden="true"><Icon name="chevronRight" size={12} /></span>
-        <Link href="/#products">{product.cat}</Link>
+        {/* Links to the real category page. It used to point at a homepage
+            anchor, which to a crawler is just the homepage again — so it passed
+            no authority to anything. */}
+        {categoryPage ? (
+          <Link href={`/category/${categoryPage.slug}`}>{categoryPage.label}</Link>
+        ) : (
+          <Link href="/#products">{product.cat}</Link>
+        )}
         <span className="sep" aria-hidden="true"><Icon name="chevronRight" size={12} /></span>
         <span aria-current="page">{product.name}</span>
       </nav>
