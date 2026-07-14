@@ -1,64 +1,131 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 
-// Crisp bubbles, deliberately NOT a blurred blob field. Each one has a defined
-// rim, a specular highlight and a glassy body, so it reads as an actual bubble
-// rather than a smear of colour. (The old version was three 560px circles under
-// filter: blur(140px), which is why they looked like fog.)
-//
-// The values are a fixed list rather than Math.random(): random values would
-// differ between the server render and the client hydration, and React would
-// throw a mismatch.
-type Bubble = { left: number; size: number; delay: number; duration: number; drift: number; opacity: number };
+/**
+ * Liquid-glass backdrop.
+ *
+ * Three things make this read as glass rather than as coloured circles:
+ *   1. an aurora underneath, so there is something *worth* refracting;
+ *   2. `backdrop-filter` on each bubble, so it genuinely distorts and brightens
+ *      what sits behind it instead of just being a translucent fill;
+ *   3. chromatic fringing on the rim (a warm ring and a cool ring, offset), which
+ *      is what real glass does to light and what the eye reads as "expensive".
+ *
+ * Bubbles are split across three depth layers. Far ones are small, dim and
+ * slightly blurred (depth of field); near ones are large, crisp and parallax
+ * fastest. That depth cue is what stops it looking like flat stickers.
+ */
 
-const BUBBLES: Bubble[] = [
-  { left: 4, size: 84, delay: 0, duration: 26, drift: 34, opacity: 0.5 },
-  { left: 12, size: 38, delay: 6, duration: 19, drift: -22, opacity: 0.42 },
-  { left: 19, size: 120, delay: 12, duration: 32, drift: 44, opacity: 0.34 },
-  { left: 27, size: 26, delay: 3, duration: 16, drift: 18, opacity: 0.55 },
-  { left: 34, size: 64, delay: 17, duration: 24, drift: -30, opacity: 0.45 },
-  { left: 42, size: 44, delay: 9, duration: 21, drift: 26, opacity: 0.5 },
-  { left: 49, size: 98, delay: 22, duration: 30, drift: -38, opacity: 0.33 },
-  { left: 57, size: 30, delay: 14, duration: 18, drift: 20, opacity: 0.52 },
-  { left: 64, size: 72, delay: 5, duration: 27, drift: -26, opacity: 0.44 },
-  { left: 71, size: 50, delay: 19, duration: 22, drift: 32, opacity: 0.48 },
-  { left: 78, size: 110, delay: 11, duration: 34, drift: -42, opacity: 0.32 },
-  { left: 85, size: 34, delay: 25, duration: 17, drift: 22, opacity: 0.54 },
-  { left: 91, size: 68, delay: 2, duration: 25, drift: -28, opacity: 0.43 },
-  { left: 97, size: 46, delay: 15, duration: 20, drift: 24, opacity: 0.47 },
+type Bubble = { x: number; size: number; delay: number; duration: number; drift: number };
+
+// Fixed values, never Math.random(): random would differ between the server
+// render and hydration, and React would throw a mismatch.
+const LAYERS: Bubble[][] = [
+  // far — small, slow, hazy
+  [
+    { x: 6, size: 26, delay: 0, duration: 42, drift: 18 },
+    { x: 17, size: 20, delay: 11, duration: 48, drift: -14 },
+    { x: 29, size: 32, delay: 22, duration: 39, drift: 22 },
+    { x: 44, size: 22, delay: 6, duration: 45, drift: -18 },
+    { x: 58, size: 30, delay: 30, duration: 41, drift: 16 },
+    { x: 71, size: 18, delay: 16, duration: 50, drift: -20 },
+    { x: 83, size: 28, delay: 25, duration: 44, drift: 24 },
+    { x: 94, size: 24, delay: 8, duration: 46, drift: -16 },
+  ],
+  // mid
+  [
+    { x: 11, size: 58, delay: 4, duration: 32, drift: 34 },
+    { x: 26, size: 44, delay: 18, duration: 36, drift: -28 },
+    { x: 40, size: 66, delay: 9, duration: 30, drift: 40 },
+    { x: 54, size: 38, delay: 26, duration: 34, drift: -24 },
+    { x: 67, size: 62, delay: 14, duration: 31, drift: 36 },
+    { x: 81, size: 46, delay: 2, duration: 35, drift: -30 },
+    { x: 92, size: 54, delay: 21, duration: 33, drift: 26 },
+  ],
+  // near — big, crisp, fastest
+  [
+    { x: 8, size: 108, delay: 7, duration: 24, drift: 56 },
+    { x: 33, size: 132, delay: 19, duration: 22, drift: -48 },
+    { x: 62, size: 96, delay: 3, duration: 26, drift: 52 },
+    { x: 88, size: 120, delay: 13, duration: 23, drift: -44 },
+  ],
 ];
+
+// How far each layer shifts with the pointer. Near layers move most — that
+// difference *is* the depth illusion.
+const PARALLAX = [6, 14, 26];
 
 export default function Orbs() {
   const pathname = usePathname();
   const success = pathname === "/confirmation" || pathname === "/order-status";
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    // Pointer parallax is a mouse affordance: skip it on touch (there is no
+    // hover) and when the user has asked for reduced motion.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    let raf = 0;
+    let tx = 0;
+    let ty = 0;
+
+    function onMove(e: PointerEvent) {
+      // -0.5..0.5 from centre.
+      tx = e.clientX / window.innerWidth - 0.5;
+      ty = e.clientY / window.innerHeight - 0.5;
+      if (raf) return; // coalesce to one write per frame
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        root!.style.setProperty("--mx", tx.toFixed(4));
+        root!.style.setProperty("--my", ty.toFixed(4));
+      });
+    }
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
-    <div className="orbs" aria-hidden="true">
-      {/* Two soft glows stay, purely for depth behind the bubbles — but they are
-          gold now, not the blue left over from the old theme. */}
-      <div className={`glow glow-1${success ? " glow-success" : ""}`} />
-      <div className="glow glow-2" />
+    <div className={`fx${success ? " fx-success" : ""}`} ref={rootRef} aria-hidden="true">
+      {/* The aurora is the thing the glass refracts. Without it the bubbles have
+          nothing to bend and fall straight back to looking like flat discs. */}
+      <div className="aurora aurora-1" />
+      <div className="aurora aurora-2" />
+      <div className="aurora aurora-3" />
 
-      <div className="bubbles">
-        {BUBBLES.map((b, i) => (
-          <span
-            key={i}
-            className={`bubble${success ? " bubble-success" : ""}`}
-            style={
-              {
-                left: `${b.left}%`,
-                width: `${b.size}px`,
-                height: `${b.size}px`,
-                animationDelay: `-${b.delay}s`,
-                animationDuration: `${b.duration}s`,
-                opacity: b.opacity,
-                "--drift": `${b.drift}px`,
-              } as React.CSSProperties
-            }
-          />
-        ))}
-      </div>
+      {LAYERS.map((bubbles, layer) => (
+        <div
+          className={`blayer blayer-${layer + 1}`}
+          key={layer}
+          style={{ "--px": PARALLAX[layer] } as React.CSSProperties}
+        >
+          {bubbles.map((b, i) => (
+            <span
+              className="glassball"
+              key={i}
+              style={
+                {
+                  left: `${b.x}%`,
+                  width: `${b.size}px`,
+                  height: `${b.size}px`,
+                  animationDelay: `-${b.delay}s`,
+                  animationDuration: `${b.duration}s`,
+                  "--drift": `${b.drift}px`,
+                } as React.CSSProperties
+              }
+            />
+          ))}
+        </div>
+      ))}
     </div>
   );
 }
