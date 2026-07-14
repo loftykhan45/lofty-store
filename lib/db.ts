@@ -46,6 +46,26 @@ function init(): Database.Database {
     db.exec("ALTER TABLE orders ADD COLUMN phone TEXT NOT NULL DEFAULT ''");
   }
 
+  // Real customer reviews, replacing the fabricated testimonials.
+  //
+  // `order_id` is the whole point: a review can only be written against a real
+  // order that actually contained the product, so "Verified buyer" is a fact the
+  // database can prove rather than a badge we print on everything. The UNIQUE
+  // constraint stops one order being used to review the same product twice.
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS reviews (
+      id TEXT PRIMARY KEY,
+      product_id TEXT NOT NULL,
+      order_id TEXT NOT NULL,
+      name TEXT NOT NULL,
+      rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+      body TEXT NOT NULL DEFAULT '',
+      created_at INTEGER NOT NULL,
+      UNIQUE (order_id, product_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_reviews_product ON reviews (product_id);
+  `);
+
   return db;
 }
 
