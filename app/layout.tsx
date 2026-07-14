@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: `%s`,
   },
   description:
-    "Buy phone cases, power banks, cables, screen protectors, car mounts and airbuds in Pakistan. Cash on Delivery nationwide, genuine accessories, 7-day easy replacement.",
+    "Buy phone cases, power banks, cables, screen protectors, car mounts and airbuds in Pakistan. Cash on Delivery nationwide, genuine accessories from real brands.",
   alternates: { canonical: "/" },
   openGraph: {
     siteName: SITE_NAME,
