@@ -129,7 +129,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="hero-image">
-            <MediaFill image="/img/hero-17promax.jpg" label="iPhone 17 Pro Max, front and back" sizes="(max-width: 900px) 100vw, 430px" fit="contain" />
+            <MediaFill image="/img/hero-17pro.png" label="iPhone 17 Pro and 17 Pro Max" sizes="(max-width: 900px) 100vw, 460px" fit="contain" />
           </div>
         </div>
       </section>
