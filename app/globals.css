@@ -370,6 +370,10 @@ a { color: inherit; }
   width: 100%; height: 100%;
   object-fit: cover;
   z-index: 0;
+  /* The source clip is shot dark. Lifting it here (rather than lightening the
+     scrim further) keeps the particles bright while the scrim still does its
+     job of holding the text legible. */
+  filter: brightness(1.5) saturate(1.2) contrast(1.05);
 }
 /* Without this the white headline sits directly on moving gold particles and
    its contrast swings with the footage. The scrim pins the backdrop dark so
@@ -383,8 +387,8 @@ a { color: inherit; }
      well not have been there. Darkest at the bottom, where it hands off to the
      page background. */
   background:
-    radial-gradient(120% 90% at 50% 0%, rgba(5, 5, 7, 0.1) 0%, rgba(5, 5, 7, 0.55) 75%),
-    linear-gradient(180deg, rgba(5, 5, 7, 0.15) 0%, rgba(5, 5, 7, 0.5) 55%, rgba(5, 5, 7, 0.92) 100%);
+    radial-gradient(120% 90% at 50% 0%, rgba(5, 5, 7, 0) 0%, rgba(5, 5, 7, 0.3) 80%),
+    linear-gradient(180deg, rgba(5, 5, 7, 0) 0%, rgba(5, 5, 7, 0.22) 55%, rgba(5, 5, 7, 0.88) 100%);
 }
 .hero-stage > .hero-section { position: relative; z-index: 2; }
 
