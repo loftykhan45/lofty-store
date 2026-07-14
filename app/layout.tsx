@@ -31,6 +31,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en-PK">
       <body>
+        {/* Marks JS as available before first paint, which is what gates the
+            scroll-reveal styles. Without it a no-JS visitor (or a crawler that
+            doesn't execute scripts) would get a page of permanently invisible
+            sections, since nothing would ever add the .is-in class. */}
+        <script dangerouslySetInnerHTML={{ __html: `document.documentElement.classList.add("js")` }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
