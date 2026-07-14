@@ -12,11 +12,14 @@ type Stat = {
 
 // Counts come from the catalog itself rather than being typed in, so they stay
 // true as products are added instead of quietly becoming a lie.
+//
+// "COD / Pay on delivery" and "7 / Day replacement" used to sit here too, but
+// they duplicated the Cash-on-Delivery and 7-day-replacement feature cards
+// directly below. Saying the same thing twice, one above the other, just made
+// the page feel padded — these two are the facts the feature cards do NOT state.
 const STATS: Stat[] = [
   { value: PRODUCTS.length, label: "Products in stock" },
   { value: CATEGORIES.length, label: "Categories" },
-  { value: "COD", label: "Pay on delivery" },
-  { value: 7, label: "Day replacement" },
 ];
 
 const COUNT_MS = 900;
