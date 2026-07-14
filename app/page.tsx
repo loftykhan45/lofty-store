@@ -399,7 +399,7 @@ export default function LandingPage() {
                 Contact us
               </a>
               <div className="footer-static">Cash on Delivery</div>
-              <div className="footer-static">7-day easy replacement</div>
+              <div className="footer-static">Delivery all over Pakistan</div>
             </div>
           </div>
           <div className="footer-bottom">
