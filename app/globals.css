@@ -25,7 +25,12 @@
      `if_luxury -> switch-to-liquid-glass`, and it lists vibrant/playful colors
      as an anti-pattern for a premium store. */
   --block-gap: 48px;
-  --lift: 200ms;
+  /* Hover micro-interactions stay in the 200–300ms band; only the entrance
+     motion below gets the slower "fluid" luxury timing. */
+  --lift: 260ms;
+  --reveal-dur: 520ms;
+  /* power2.out */
+  --reveal-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 @media (min-width: 1500px) {
@@ -89,6 +94,13 @@ a { color: inherit; }
 }
 @media (prefers-reduced-motion: reduce) {
   .orb, .pop-in { animation: none !important; }
+  /* Land the revealed content in its final state immediately — the transition,
+     not just the offset, has to go, or the elements still drift into place. */
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 .page { position: relative; z-index: 1; }
@@ -97,8 +109,9 @@ a { color: inherit; }
 .announce-bar {
   position: relative; z-index: 21;
   overflow: hidden;
-  background: #0c1830;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* Warm near-black, not the navy left over from the blue theme. */
+  background: #14100a;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.22);
   padding: 9px 0;
 }
 .announce-track {
@@ -113,7 +126,7 @@ a { color: inherit; }
   white-space: nowrap;
   padding: 0 28px;
 }
-.announce-dot { color: #6fa1ff; font-size: 11px; }
+.announce-dot { color: var(--accent-solid); font-size: 11px; }
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -360,6 +373,54 @@ a { color: inherit; }
   background: transparent;
 }
 .swatch-label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: rgba(255, 255, 255, 0.68); }
+
+/* Scroll reveal.
+   ui-ux-pro-max's E-commerce *Luxury* row calls for "fluid animations
+   (400–600ms)" — deliberately slower and more composed than the 200–300ms the
+   non-luxury e-commerce row wants. --reveal-ease is power2.out expressed as a
+   bezier; the count-up in StatRow eases on the same curve so the whole page
+   moves to one rhythm.
+
+   Gated on .js: without JavaScript the hidden state never applies, so the
+   content is visible rather than permanently transparent. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity var(--reveal-dur) var(--reveal-ease),
+    transform var(--reveal-dur) var(--reveal-ease);
+  transition-delay: calc(var(--reveal-i, 0) * 60ms);
+  will-change: opacity, transform;
+}
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  /* Compositing hint is only worth its GPU memory while the tween runs. */
+  will-change: auto;
+}
+
+/* stat tiles */
+.stat-row {
+  max-width: var(--shell); margin: 0 auto; padding: 0 28px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+.stat-tile { padding: 22px 20px; border-radius: 20px; text-align: center; }
+.stat-value {
+  color: var(--accent-solid);
+  font-size: 34px; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em;
+  /* Tabular figures: without them the counting digits change width every frame
+     and the tile visibly jitters as it animates. */
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+}
+@media (max-width: 720px) {
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+  .stat-value { font-size: 28px; }
+}
 
 /* search */
 .search-wrap { position: relative; max-width: var(--shell); margin: 0 auto; padding: 0 28px 8px; z-index: 15; }
