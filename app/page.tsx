@@ -2,18 +2,27 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/lib/StoreProvider";
-import { PRODUCTS, CATEGORIES, TESTIMONIALS, money, whatsappProductLink, whatsappLink, type Product } from "@/lib/products";
+import { PRODUCTS, CATEGORIES, money, whatsappProductLink, whatsappLink, type Product } from "@/lib/products";
 import Link from "next/link";
 import MediaFill from "@/components/MediaFill";
 import Icon from "@/components/Icon";
 import Reveal from "@/components/Reveal";
 import StatRow from "@/components/StatRow";
+import CustomerReviews from "@/components/CustomerReviews";
 
 const MAX_SUGGESTIONS = 6;
+
+type Sort = "featured" | "price-asc" | "price-desc";
+const SORTS: { value: Sort; label: string }[] = [
+  { value: "featured", label: "Featured" },
+  { value: "price-asc", label: "Price: low to high" },
+  { value: "price-desc", label: "Price: high to low" },
+];
 
 export default function LandingPage() {
   const { cart, addToCart, setQty, activeCategory, setActiveCategory } = useStore();
   const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<Sort>("featured");
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
   const searchWrapRef = useRef<HTMLDivElement>(null);
   const heroImageRef = useRef<HTMLDivElement>(null);
@@ -78,12 +87,18 @@ export default function LandingPage() {
 
   const filteredProducts = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return PRODUCTS.filter((p) => {
+    const list = PRODUCTS.filter((p) => {
       const matchesCategory = !activeCategory || p.cat === activeCategory;
       const matchesQuery = !q || p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q);
       return matchesCategory && matchesQuery;
     });
-  }, [activeCategory, query]);
+
+    // "featured" keeps the hand-ordered catalogue (and its model groupings)
+    // untouched; the price sorts are what make 122 products actually shoppable.
+    if (sort === "price-asc") return [...list].sort((a, b) => a.price - b.price);
+    if (sort === "price-desc") return [...list].sort((a, b) => b.price - a.price);
+    return list;
+  }, [activeCategory, query, sort]);
 
   // Group by model series (e.g. every "iPhone 15" variant falls under one
   // "iPhone 15" heading) so each variant card visibly belongs to its model.
@@ -97,7 +112,11 @@ export default function LandingPage() {
     }
     return groups;
   }, [filteredProducts]);
-  const isGrouped = [...productGroups.keys()].some((k) => k !== "");
+  // Grouping by model series only makes sense in the catalogue's own order.
+  // Under a price sort it would fight the sort — the cheapest item could sit
+  // three headings down — so a sorted view renders as one flat grid.
+  const isGrouped =
+    sort === "featured" && [...productGroups.keys()].some((k) => k !== "");
 
   function renderProductCard(p: Product) {
     const qty = cart[p.id] || 0;
@@ -292,17 +311,38 @@ export default function LandingPage() {
             <div className="section-kicker">Catalog</div>
             <h2 className="section-title">Featured products</h2>
           </div>
-          {(activeCategory || query) && (
-            <button
-              className="section-link"
-              onClick={() => {
-                setActiveCategory(null);
-                setQuery("");
-              }}
-            >
-              Clear filters ✕
-            </button>
-          )}
+
+          <div className="catalog-tools">
+            <span className="catalog-count">
+              {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
+            </span>
+
+            <label className="sort-control">
+              <span className="sr-only">Sort products</span>
+              <select
+                className="sort-select"
+                value={sort}
+                onChange={(e) => setSort(e.target.value as Sort)}
+              >
+                {SORTS.map((s) => (
+                  <option key={s.value} value={s.value}>{s.label}</option>
+                ))}
+              </select>
+            </label>
+
+            {(activeCategory || query || sort !== "featured") && (
+              <button
+                className="section-link"
+                onClick={() => {
+                  setActiveCategory(null);
+                  setQuery("");
+                  setSort("featured");
+                }}
+              >
+                Clear
+              </button>
+            )}
+          </div>
         </div>
 
         {filteredProducts.length === 0 ? (
@@ -342,25 +382,10 @@ export default function LandingPage() {
         </Reveal>
       </section>
 
-      <section className="section" id="story">
-        <div className="section-kicker">Reviews</div>
-        <h2 className="section-title">What customers say</h2>
-        <div className="testimonial-grid">
-          {TESTIMONIALS.map((t, i) => (
-            <Reveal className="testimonial-card glass" index={i} key={t.name}>
-              <div className="testimonial-stars" aria-hidden="true">★★★★★</div>
-              <div className="testimonial-quote">&ldquo;{t.quote}&rdquo;</div>
-              <div className="testimonial-footer">
-                <div className="testimonial-avatar" aria-hidden="true">{t.name.charAt(0)}</div>
-                <div>
-                  <div className="testimonial-name">{t.name}</div>
-                  <div className="testimonial-verified"><Icon name="check" size={13} /> Verified buyer</div>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      {/* Real reviews from real orders. Renders nothing until someone has
+          actually left one — the invented testimonials that used to sit here
+          were social proof the store had not earned. */}
+      <CustomerReviews />
 
       <footer className="site-footer">
         <div className="footer-inner">
@@ -398,6 +423,9 @@ export default function LandingPage() {
               >
                 Contact us
               </a>
+              {/* The order-status page existed but nothing linked to it, so a
+                  COD customer had no way to check on their order. */}
+              <Link className="footer-link" href="/order-status">Track your order</Link>
               <div className="footer-static">Cash on Delivery</div>
               <div className="footer-static">Delivery all over Pakistan</div>
             </div>
