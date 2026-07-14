@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useOrder } from "@/lib/useOrder";
 import { money } from "@/lib/products";
 import MediaFill from "@/components/MediaFill";
+import ReviewForm from "@/components/ReviewForm";
 
 const STAGE_MINUTES = [0, 1, 5, 15];
 const STAGES = [
@@ -99,6 +100,17 @@ function OrderStatus() {
         <div className="detail-card-title">Shipping to</div>
         <div className="ship-to-text">{order.firstName} {order.lastName}<br />{order.address}<br />{order.city}</div>
       </div>
+
+      {/* Offered once the order has actually been delivered — asking someone to
+          review a product they haven't received yet is how stores end up with
+          reviews about the packaging. */}
+      {stageIdx >= STAGES.length - 1 && (
+        <ReviewForm
+          orderId={order.id}
+          lines={order.lines.map((l) => ({ id: l.id, name: l.name }))}
+          buyerName={order.firstName}
+        />
+      )}
 
       <div className="confirm-actions">
         <Link href="/" className="pill pill-primary">Continue shopping</Link>
