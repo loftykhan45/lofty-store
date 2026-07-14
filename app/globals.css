@@ -100,18 +100,22 @@ a { color: inherit; }
   mix-blend-mode: screen;
   animation: aurora-drift 34s ease-in-out infinite;
 }
+/* Kept deliberately faint. At full strength these washed the whole page a muddy
+   olive-yellow — the same failure as the gold-dust video. This should read as a
+   hint of warmth in the dark, not as a colour cast. */
 .aurora-1 {
   top: -22%; left: -12%; width: 62vw; height: 62vw;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.5) 0%, rgba(212, 175, 55, 0.14) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.05) 45%, transparent 70%);
 }
 .aurora-2 {
   top: 16%; right: -18%; width: 56vw; height: 56vw;
-  background: radial-gradient(circle, rgba(255, 196, 92, 0.32) 0%, rgba(184, 134, 11, 0.12) 48%, transparent 72%);
+  background: radial-gradient(circle, rgba(255, 196, 92, 0.13) 0%, rgba(184, 134, 11, 0.04) 48%, transparent 72%);
   animation-duration: 44s; animation-direction: reverse;
 }
 .aurora-3 {
   bottom: -26%; left: 26%; width: 66vw; height: 66vw;
-  background: radial-gradient(circle, rgba(140, 106, 20, 0.34) 0%, rgba(212, 175, 55, 0.1) 50%, transparent 74%);
+  /* Warm gold, not the olive this used to be — olive over near-black goes muddy. */
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.11) 0%, rgba(212, 175, 55, 0.04) 50%, transparent 74%);
   animation-duration: 52s;
 }
 .fx-success .aurora-1 { background: radial-gradient(circle, rgba(45, 200, 120, 0.44) 0%, rgba(45, 200, 120, 0.12) 45%, transparent 70%); }
@@ -457,22 +461,76 @@ a { color: inherit; }
 }
 
 /* search */
-.search-wrap { position: relative; max-width: var(--shell); margin: 0 auto; padding: 0 28px 8px; z-index: 15; }
+/* Search.
+   z-index sits above the ambient backdrop so nothing decorative can ever land
+   on top of it, and the box is OPAQUE rather than glass — a translucent search
+   field let the background art show straight through, which is what made it
+   look like something was overlapping the bar. */
+.search-wrap { position: relative; max-width: var(--shell); margin: 0 auto; padding: 4px 28px 8px; z-index: 30; }
+/* Constrains the field to a sensible reading width and centres it, instead of a
+   full-bleed slab stretched across a 1400px monitor. */
+.search-shell { position: relative; max-width: 640px; margin: 0 auto; }
 .search-box {
-  display: flex; align-items: center; gap: 12px;
-  padding: 14px 20px; border-radius: 999px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 6px 6px 18px;
+  border-radius: 999px;
+  background: rgba(13, 13, 19, 0.94);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: border-color var(--lift) ease, box-shadow var(--lift) ease;
 }
-.search-icon { color: rgba(255, 255, 255, 0.58); font-size: 16px; flex-shrink: 0; }
+.search-box:hover { border-color: rgba(212, 175, 55, 0.5); }
+/* Focus lives on the whole pill, not the bare input — the input has no border
+   of its own, so a ring on it alone would look detached. */
+.search-box:focus-within {
+  border-color: rgba(212, 175, 55, 0.9);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(212, 175, 55, 0.18);
+}
+.search-icon { color: var(--accent-solid); display: inline-flex; flex-shrink: 0; }
 .search-input {
-  flex: 1; background: none; border: none; outline: none;
+  flex: 1; min-width: 0;
+  background: none; border: none; outline: none;
+  padding: 11px 0;
   color: #fff; font-size: 15px; font-family: inherit;
 }
-.search-input::placeholder { color: rgba(255, 255, 255, 0.53); }
-.search-clear { color: rgba(255, 255, 255, 0.63); font-size: 14px; cursor: pointer; background: none; border: none; flex-shrink: 0; }
+.search-input::placeholder { color: rgba(255, 255, 255, 0.5); }
+.search-clear {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  color: rgba(255, 255, 255, 0.7); cursor: pointer;
+  background: rgba(255, 255, 255, 0.08); border: none; flex-shrink: 0;
+  transition: background var(--lift) ease, color var(--lift) ease;
+}
+.search-clear:hover { background: rgba(255, 255, 255, 0.16); color: #fff; }
+/* The primary action, so the bar reads as a control rather than a passive strip. */
+.search-go {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 0 22px;
+  border: none; border-radius: 999px; cursor: pointer;
+  background: var(--accent-gradient); color: var(--accent-text);
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  transition: filter var(--lift) ease, transform var(--lift) ease;
+}
+.search-go:hover { filter: brightness(1.08); }
+.search-go:active { transform: scale(0.96); }
+/* On desktop the word "Search" is enough; the icon is redundant next to the one
+   already sitting at the head of the field. */
+.search-go-icon { display: none; }
+
+@media (max-width: 560px) {
+  /* The label would crowd the field on a small phone, so swap it for the icon —
+     the button keeps its 44px target and its aria-label either way. */
+  .search-go { padding: 0; width: 44px; }
+  .search-go-label { display: none; }
+  .search-go-icon { display: inline-flex; }
+}
 .search-empty { color: rgba(255, 255, 255, 0.63); font-size: 15px; padding: 40px 0; text-align: center; }
 
+/* Anchored to .search-shell, so it tracks the narrower field rather than the
+   old full-width wrapper. */
 .search-suggestions {
-  position: absolute; top: calc(100% + 8px); left: 28px; right: 28px;
+  position: absolute; top: calc(100% + 8px); left: 0; right: 0;
   border-radius: 20px; padding: 8px; max-height: 360px; overflow-y: auto;
   background: rgba(19, 19, 32, 0.96);
 }
