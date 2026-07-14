@@ -9,6 +9,7 @@ import Icon from "@/components/Icon";
 import Reveal from "@/components/Reveal";
 import StatRow from "@/components/StatRow";
 import CustomerReviews from "@/components/CustomerReviews";
+import { CATEGORY_PAGES } from "@/lib/categories";
 
 const MAX_SUGGESTIONS = 6;
 
@@ -288,20 +289,19 @@ export default function LandingPage() {
         {/* The grid reveals as one unit rather than per-card: the category
             buttons are the click target, and wrapping each in a div would take
             them out of the grid flow. */}
+        {/* Real links to the category landing pages, not filter buttons — a
+            crawler can follow a link, and these are the pages built to rank. */}
         <Reveal className="cat-grid">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.name}
-              className={`cat-card glass ${activeCategory === cat.name ? "active" : ""}`}
-              onClick={() => {
-                setActiveCategory(activeCategory === cat.name ? null : cat.name);
-                scrollToProducts();
-              }}
-            >
-              <div className="cat-image"><MediaFill image={cat.image} label={cat.name} sizes="(max-width: 480px) 45vw, (max-width: 900px) 22vw, 260px" /></div>
-              <div className="cat-name">{cat.name}</div>
-            </button>
-          ))}
+          {CATEGORIES.map((cat) => {
+            const page = CATEGORY_PAGES.find((c) => c.cat === cat.name);
+            const href = page ? `/category/${page.slug}` : "/#products";
+            return (
+              <Link key={cat.name} href={href} className="cat-card glass">
+                <div className="cat-image"><MediaFill image={cat.image} label={cat.name} sizes="(max-width: 480px) 45vw, (max-width: 900px) 22vw, 260px" /></div>
+                <div className="cat-name">{cat.name}</div>
+              </Link>
+            );
+          })}
         </Reveal>
       </section>
 
@@ -399,18 +399,13 @@ export default function LandingPage() {
             </div>
             <div className="footer-col">
               <div className="footer-col-title">Shop</div>
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat.name}
-                  type="button"
-                  className="footer-link"
-                  onClick={() => {
-                    setActiveCategory(cat.name);
-                    scrollToProducts();
-                  }}
-                >
-                  {cat.name}
-                </button>
+              {/* Real links, not filter buttons. A crawler cannot click a
+                  button, so the old version passed no authority to anything —
+                  these now point at the category landing pages. */}
+              {CATEGORY_PAGES.map((c) => (
+                <Link key={c.slug} className="footer-link" href={`/category/${c.slug}`}>
+                  {c.label}
+                </Link>
               ))}
             </div>
             <div className="footer-col">
