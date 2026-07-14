@@ -7,7 +7,7 @@ import { Product, money } from "@/lib/products";
 // authority. Set NEXT_PUBLIC_SITE_URL to the real domain once it's registered;
 // everything below (sitemap, canonicals, JSON-LD) picks it up automatically.
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://lofty.24-144-105-14.sslip.io"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://lofty.146-190-77-193.sslip.io"
 ).replace(/\/$/, "");
 
 export const SITE_NAME = "Lofty Store";
