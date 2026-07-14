@@ -99,8 +99,7 @@ export default async function ProductPage({
           <p className="pdp-lede">
             {product.name} available in Pakistan for {money(product.price)}.
             Pay <strong>cash on delivery</strong> — no card needed. Delivered in
-            2–7 days nationwide, with a 7-day easy replacement if it isn&apos;t
-            the right fit.
+            2–7 days nationwide.
           </p>
 
           <ProductBuy product={product} />
@@ -109,7 +108,6 @@ export default async function ProductPage({
             <li><Icon name="cash" size={16} /> <span>Cash on Delivery across Pakistan</span></li>
             <li><Icon name="truck" size={16} /> <span>Delivery in 2–7 business days</span></li>
             <li><Icon name="shield" size={16} /> <span>Genuine product, not a counterfeit</span></li>
-            <li><Icon name="refresh" size={16} /> <span>7-day easy replacement</span></li>
           </ul>
 
           <dl className="pdp-specs">
