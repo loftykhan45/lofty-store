@@ -349,8 +349,8 @@ a { color: inherit; }
 .hero-actions .pill { padding: 15px 30px; font-size: 16px; }
 .hero-image {
   position: relative;
-  aspect-ratio: 3472 / 4624;
-  width: 100%; max-width: 300px; margin: 0 auto;
+  aspect-ratio: 489 / 470;
+  width: 100%; max-width: 430px; margin: 0 auto;
   border-radius: 26px;
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
@@ -819,7 +819,7 @@ footer.site-footer { margin-top: 24px; border-top: 1px solid rgba(255, 255, 255,
   .cat-name { font-size: 13px; }
   .hero { padding: 24px; border-radius: 26px; }
   .hero-title { font-size: 30px; }
-  .hero-image { max-width: 220px; }
+  .hero-image { max-width: 320px; }
   .section { padding: 4px 18px 40px; }
   .hero-section { padding: 40px 18px 48px; }
 }
