@@ -6,6 +6,8 @@ import { PRODUCTS, CATEGORIES, TESTIMONIALS, money, whatsappProductLink, whatsap
 import Link from "next/link";
 import MediaFill from "@/components/MediaFill";
 import Icon from "@/components/Icon";
+import Reveal from "@/components/Reveal";
+import StatRow from "@/components/StatRow";
 
 const MAX_SUGGESTIONS = 6;
 
@@ -14,6 +16,37 @@ export default function LandingPage() {
   const [query, setQuery] = useState("");
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
   const searchWrapRef = useRef<HTMLDivElement>(null);
+  const heroImageRef = useRef<HTMLDivElement>(null);
+
+  // Hero parallax: the phones drift a little slower than the page, which gives
+  // the hero depth without a video. Only the image moves — parallaxing body
+  // copy hurts readability and is a motion-sickness trigger.
+  useEffect(() => {
+    const el = heroImageRef.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let raf = 0;
+    function onScroll() {
+      if (raf) return; // Coalesce to one transform write per frame.
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const y = window.scrollY;
+        // Stop once the hero is well off screen; past that we'd be paying for
+        // a transform nobody can see.
+        if (y > 900) return;
+        // Capped at 44px (~9% of the box) so the phones never visibly detach
+        // from the hero they sit in.
+        el!.style.transform = `translate3d(0, ${Math.min(y * 0.12, 44)}px, 0)`;
+      });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   // Live suggestions — searches the whole catalog (ignores any active
   // category filter) so a match appears the instant you type, without
@@ -128,11 +161,13 @@ export default function LandingPage() {
               </button>
             </div>
           </div>
-          <div className="hero-image">
+          <div className="hero-image" ref={heroImageRef}>
             <MediaFill image="/img/hero-17pro.png" label="iPhone 17 Pro and 17 Pro Max" sizes="(max-width: 900px) 100vw, 460px" fit="contain" />
           </div>
         </div>
       </section>
+
+      <StatRow />
 
       <div className="search-wrap" ref={searchWrapRef}>
         <div className="search-box glass">
@@ -195,14 +230,14 @@ export default function LandingPage() {
             { icon: "truck", title: "Fast nationwide delivery", body: "2–7 days to every city in Pakistan, tracked the whole way." },
             { icon: "shield", title: "Genuine accessories", body: "Sourced from real brands — never counterfeit, always tested." },
             { icon: "refresh", title: "7-day easy replacement", body: "Not the right fit? Swap it within a week, no questions." },
-          ].map((f) => (
-            <div className="feature-block glass" key={f.title}>
+          ].map((f, i) => (
+            <Reveal className="feature-block glass" index={i} key={f.title}>
               <div className="feature-icon" aria-hidden="true">
                 <Icon name={f.icon as "cash" | "truck" | "shield" | "refresh"} size={22} />
               </div>
               <h3 className="feature-title">{f.title}</h3>
               <p className="feature-body">{f.body}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -210,7 +245,10 @@ export default function LandingPage() {
       <section className="section" id="shop">
         <div className="section-kicker">Browse</div>
         <h2 className="section-title">Shop by category</h2>
-        <div className="cat-grid">
+        {/* The grid reveals as one unit rather than per-card: the category
+            buttons are the click target, and wrapping each in a div would take
+            them out of the grid flow. */}
+        <Reveal className="cat-grid">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.name}
@@ -224,7 +262,7 @@ export default function LandingPage() {
               <div className="cat-name">{cat.name}</div>
             </button>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       <section className="section" id="products">
@@ -263,7 +301,7 @@ export default function LandingPage() {
       </section>
 
       <section className="section" aria-label="Order on WhatsApp">
-        <div className="promo-band glass">
+        <Reveal className="promo-band glass">
           <div className="promo-band-copy">
             <div className="section-kicker">Prefer to chat?</div>
             <h2 className="promo-band-title">Order on WhatsApp in under a minute.</h2>
@@ -280,15 +318,15 @@ export default function LandingPage() {
           >
             Chat on WhatsApp
           </a>
-        </div>
+        </Reveal>
       </section>
 
       <section className="section" id="story">
         <div className="section-kicker">Reviews</div>
         <h2 className="section-title">What customers say</h2>
         <div className="testimonial-grid">
-          {TESTIMONIALS.map((t) => (
-            <div className="testimonial-card glass" key={t.name}>
+          {TESTIMONIALS.map((t, i) => (
+            <Reveal className="testimonial-card glass" index={i} key={t.name}>
               <div className="testimonial-stars" aria-hidden="true">★★★★★</div>
               <div className="testimonial-quote">&ldquo;{t.quote}&rdquo;</div>
               <div className="testimonial-footer">
@@ -298,7 +336,7 @@ export default function LandingPage() {
                   <div className="testimonial-verified"><Icon name="check" size={13} /> Verified buyer</div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
