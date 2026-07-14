@@ -76,12 +76,58 @@ a { color: inherit; }
   box-shadow: var(--glass-shadow);
 }
 
-/* ambient orbs */
+/* Background bubbles.
+   These used to be three 560px circles under `filter: blur(140px)` — which is
+   why they read as fog rather than bubbles. Now they have a hard rim, a
+   specular highlight and a glassy body, and carry NO blur filter at all, so the
+   edges stay genuinely crisp at any size. */
 .orbs { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
-.orb { position: absolute; border-radius: 50%; filter: blur(140px); animation: drift 18s ease-in-out infinite; }
-.orb-1 { top: -140px; left: -120px; width: 560px; height: 560px; background: oklch(0.5 0.08 255); opacity: 0.4; animation-duration: 16s; }
-.orb-2 { top: 180px; right: -160px; width: 520px; height: 520px; background: oklch(0.45 0.06 250); opacity: 0.32; animation-duration: 20s; animation-direction: reverse; }
-.orb-3 { bottom: -160px; left: 35%; width: 480px; height: 480px; background: oklch(0.48 0.05 240); opacity: 0.28; animation-duration: 22s; }
+
+/* Soft gold light behind the bubbles, for depth. This is the only thing here
+   that is intentionally blurred — and it sits far behind, so it never makes the
+   bubbles themselves look soft. */
+.glow { position: absolute; border-radius: 50%; filter: blur(150px); animation: drift 20s ease-in-out infinite; }
+.glow-1 { top: -180px; left: -140px; width: 620px; height: 620px; background: rgba(212, 175, 55, 0.16); }
+.glow-2 { bottom: -200px; right: -160px; width: 560px; height: 560px; background: rgba(184, 134, 11, 0.12); animation-duration: 26s; animation-direction: reverse; }
+.glow-success { background: rgba(45, 200, 120, 0.16); }
+
+.bubbles { position: absolute; inset: 0; overflow: hidden; }
+.bubble {
+  position: absolute;
+  bottom: -160px;
+  border-radius: 50%;
+  /* The highlight sits off-centre (top-left) like a real lit sphere; the rim is
+     a hard stop, not a fade, which is what makes the edge read as crisp. */
+  background:
+    radial-gradient(circle at 30% 26%,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 240, 190, 0.42) 9%,
+      rgba(240, 207, 106, 0.2) 26%,
+      rgba(212, 175, 55, 0.1) 52%,
+      rgba(212, 175, 55, 0.14) 88%,
+      rgba(240, 207, 106, 0.22) 100%);
+  /* A bright, fully-opaque rim is what actually sells "bubble" — a faint one
+     just reads as a dark ball. */
+  border: 1px solid rgba(240, 207, 106, 0.9);
+  box-shadow:
+    inset 0 0 22px rgba(255, 235, 170, 0.25),
+    inset -8px -10px 26px rgba(212, 175, 55, 0.3),
+    0 0 26px rgba(212, 175, 55, 0.3);
+  animation-name: rise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+.bubble-success { border-color: rgba(62, 232, 136, 0.45); }
+
+/* Rises the full viewport height and drifts sideways on the way up. Uses only
+   transform/opacity, so it composites on the GPU and never triggers layout. */
+@keyframes rise {
+  0% { transform: translate3d(0, 0, 0) scale(0.9); }
+  10% { transform: translate3d(calc(var(--drift) * 0.15), -10vh, 0) scale(1); }
+  90% { transform: translate3d(calc(var(--drift) * 0.9), -95vh, 0) scale(1.04); }
+  100% { transform: translate3d(var(--drift), -115vh, 0) scale(1.06); }
+}
 
 @keyframes drift {
   0%, 100% { transform: translate(0, 0); }
@@ -93,7 +139,7 @@ a { color: inherit; }
   100% { transform: scale(1); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .orb, .pop-in { animation: none !important; }
+  .glow, .bubble, .pop-in { animation: none !important; }
   /* Land the revealed content in its final state immediately — the transition,
      not just the offset, has to go, or the elements still drift into place. */
   .js [data-reveal] {
