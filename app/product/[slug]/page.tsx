@@ -13,9 +13,15 @@ import {
 import MediaFill from "@/components/MediaFill";
 import ProductBuy from "@/components/ProductBuy";
 import Icon from "@/components/Icon";
+import Stars from "@/components/Stars";
+import { reviewsForProduct, summaryFor } from "@/lib/reviews";
 
-// Pre-render all 122 at build time: they're static content, so they should be
-// static HTML — fast for users and trivially crawlable.
+// Reviews live in SQLite and change as customers post them, so these pages are
+// rendered per request rather than frozen at build time. They stay fully
+// server-rendered, so the review text is still in the HTML for crawlers.
+export const dynamic = "force-dynamic";
+
+// Still enumerate every product, so all 122 URLs are known and crawlable.
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.id }));
 }
@@ -57,13 +63,18 @@ export default async function ProductPage({
     (p) => p.cat === product.cat && p.id !== product.id
   ).slice(0, 4);
 
+  const reviews = reviewsForProduct(product.id);
+  const summary = summaryFor(product.id);
+
   return (
     <div className="pdp-wrap">
       {/* Structured data: this is what makes the page eligible for merchant
-          listings and is what AI shopping answers actually read. */}
+          listings and is what AI shopping answers actually read. The rating is
+          passed in only when real reviews exist — a fabricated aggregateRating
+          is a policy violation, not a growth hack. */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(product)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(product, summary)) }}
       />
       <script
         type="application/ld+json"
@@ -91,6 +102,19 @@ export default async function ProductPage({
         <div className="pdp-info">
           <div className="pdp-brand">{brandOf(product)}</div>
           <h1 className="pdp-title">{product.name}</h1>
+
+          {/* Nothing is shown when there are no reviews yet. An empty star row
+              or a "0 reviews" label is worse than silence. */}
+          {summary && (
+            <a className="pdp-rating" href="#reviews">
+              <Stars rating={summary.average} size={15} />
+              <span className="pdp-rating-value">{summary.average.toFixed(1)}</span>
+              <span className="pdp-rating-count">
+                ({summary.count} {summary.count === 1 ? "review" : "reviews"})
+              </span>
+            </a>
+          )}
+
           <div className="pdp-price">{money(product.price)}</div>
 
           {/* Answering the buyer's real questions in the first screen is both
@@ -119,6 +143,45 @@ export default async function ProductPage({
           </dl>
         </div>
       </div>
+
+      <section className="pdp-reviews" id="reviews">
+        <h2 className="section-title">Customer reviews</h2>
+        {reviews.length === 0 ? (
+          <p className="pdp-reviews-empty">
+            No reviews for this product yet. After your order arrives you can
+            leave one from your <Link href="/order-status">order status</Link> page.
+          </p>
+        ) : (
+          <div className="review-list">
+            {reviews.map((r) => (
+              <article className="review-card glass" key={r.id}>
+                <div className="review-head">
+                  <div className="review-avatar" aria-hidden="true">
+                    {r.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <div className="review-name">{r.name}</div>
+                    {/* Provable, not decorative: a review row can only exist if
+                        it was written against an order containing this product. */}
+                    <div className="review-verified">
+                      <Icon name="check" size={13} /> Verified purchase
+                    </div>
+                  </div>
+                  <Stars rating={r.rating} size={14} />
+                </div>
+                {r.body && <p className="review-body">{r.body}</p>}
+                <time className="review-date" dateTime={new Date(r.createdAt).toISOString()}>
+                  {new Date(r.createdAt).toLocaleDateString("en-PK", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </time>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
 
       {related.length > 0 && (
         <section className="pdp-related">
