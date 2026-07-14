@@ -170,54 +170,74 @@ export default function LandingPage() {
       <StatRow />
 
       <div className="search-wrap" ref={searchWrapRef}>
-        <div className="search-box glass">
-          <span className="search-icon" aria-hidden="true"><Icon name="search" size={18} /></span>
-          <input
-            className="search-input"
-            type="search"
-            name="q"
-            aria-label="Search products"
-            placeholder="Search products — try “case” or “charger”"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setSuggestionsOpen(true);
-            }}
-            onFocus={() => setSuggestionsOpen(true)}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") setSuggestionsOpen(false);
-              if (e.key === "Enter") {
-                setSuggestionsOpen(false);
-                document.getElementById("products")?.scrollIntoView({ behavior: "smooth", block: "start" });
-              }
-            }}
-          />
-          {query && <button className="search-clear" onClick={() => { setQuery(""); setSuggestionsOpen(false); }}>✕</button>}
-        </div>
-
-        {suggestionsOpen && query.trim() && (
-          <div className="search-suggestions glass">
-            {suggestions.length === 0 ? (
-              <div className="search-suggestion-empty">No products match “{query}”.</div>
-            ) : (
-              suggestions.map((p) => (
-                <button
-                  key={p.id}
-                  className="search-suggestion-item"
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => goToSuggestion(p)}
-                >
-                  <div className="search-suggestion-thumb"><MediaFill image={p.image} label={p.name} sizes="36px" /></div>
-                  <div className="search-suggestion-text">
-                    <div className="search-suggestion-name">{p.name}</div>
-                    <div className="search-suggestion-cat">{p.cat}</div>
-                  </div>
-                  <div className="search-suggestion-price">{money(p.price)}</div>
-                </button>
-              ))
+        <div className="search-shell">
+          <div className="search-box">
+            <span className="search-icon" aria-hidden="true"><Icon name="search" size={18} /></span>
+            <input
+              className="search-input"
+              type="search"
+              name="q"
+              aria-label="Search products"
+              placeholder="Search products — try “case” or “charger”"
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setSuggestionsOpen(true);
+              }}
+              onFocus={() => setSuggestionsOpen(true)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") setSuggestionsOpen(false);
+                if (e.key === "Enter") {
+                  setSuggestionsOpen(false);
+                  scrollToProducts();
+                }
+              }}
+            />
+            {query && (
+              <button
+                className="search-clear"
+                aria-label="Clear search"
+                onClick={() => { setQuery(""); setSuggestionsOpen(false); }}
+              >
+                <Icon name="close" size={14} />
+              </button>
             )}
+            <button
+              className="search-go"
+              // The label is hidden on small screens, so the button needs its own
+              // name or it announces as an empty button to a screen reader.
+              aria-label="Search products"
+              onClick={() => { setSuggestionsOpen(false); scrollToProducts(); }}
+            >
+              <span className="search-go-icon" aria-hidden="true"><Icon name="search" size={16} /></span>
+              <span className="search-go-label">Search</span>
+            </button>
           </div>
-        )}
+
+          {suggestionsOpen && query.trim() && (
+            <div className="search-suggestions">
+              {suggestions.length === 0 ? (
+                <div className="search-suggestion-empty">No products match “{query}”.</div>
+              ) : (
+                suggestions.map((p) => (
+                  <button
+                    key={p.id}
+                    className="search-suggestion-item"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => goToSuggestion(p)}
+                  >
+                    <div className="search-suggestion-thumb"><MediaFill image={p.image} label={p.name} sizes="36px" /></div>
+                    <div className="search-suggestion-text">
+                      <div className="search-suggestion-name">{p.name}</div>
+                      <div className="search-suggestion-cat">{p.cat}</div>
+                    </div>
+                    <div className="search-suggestion-price">{money(p.price)}</div>
+                  </button>
+                ))
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Feature-Rich Showcase: the value props were previously buried in the
