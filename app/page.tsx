@@ -129,7 +129,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="hero-image">
-            <MediaFill image="/img/hero.jpg" label="Lofty Store mobile accessories" sizes="(max-width: 900px) 100vw, 560px" fit="contain" />
+            <MediaFill image="/img/hero-17promax.jpg" label="iPhone 17 Pro Max, front and back" sizes="(max-width: 900px) 100vw, 430px" fit="contain" />
           </div>
         </div>
       </section>
