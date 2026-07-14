@@ -556,9 +556,11 @@ a { color: inherit; }
 
 /* --- Feature-Rich Showcase blocks --- */
 .feature-section { padding-top: 8px; padding-bottom: var(--block-gap); }
+/* Three columns, not four — the 7-day replacement block was removed, and a
+   4-column grid would have left an empty cell hanging off the end of the row. */
 .feature-blocks {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 18px;
 }
 .feature-block {
