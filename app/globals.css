@@ -437,10 +437,15 @@ a { color: inherit; }
   will-change: auto;
 }
 
-/* stat tiles */
+/* stat tiles.
+   Two tiles now, not four (the other two repeated the feature cards below).
+   Width is pinned to the search field's 640px so the two sit as one centred
+   column rather than two tiles stretched across a wide monitor. */
+/* 696 = the search field's 640 + the 28px gutters either side (box-sizing is
+   border-box globally), so the tiles line up exactly with the field above. */
 .stat-row {
-  max-width: var(--shell); margin: 0 auto; padding: 0 28px;
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  max-width: 696px; margin: 14px auto 0; padding: 0 28px;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
 }
 .stat-tile { padding: 22px 20px; border-radius: 20px; text-align: center; }
 .stat-value {
