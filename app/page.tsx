@@ -167,8 +167,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <StatRow />
-
+      {/* Search sits directly under the hero: it is the first thing a returning
+          customer wants, so it comes before the supporting stats. */}
       <div className="search-wrap" ref={searchWrapRef}>
         <div className="search-shell">
           <div className="search-box">
@@ -239,6 +239,8 @@ export default function LandingPage() {
           )}
         </div>
       </div>
+
+      <StatRow />
 
       {/* Feature-Rich Showcase: the value props were previously buried in the
           scrolling marquee. Promoting them to real blocks is the core of the
