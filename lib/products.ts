@@ -292,5 +292,5 @@ export const ANNOUNCEMENTS = [
   "Cash on Delivery available",
   "Fast delivery all over Pakistan",
   "Genuine accessories, always",
-  "7-day easy replacement",
+  "Order on WhatsApp",
 ];
