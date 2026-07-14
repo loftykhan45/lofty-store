@@ -251,11 +251,10 @@ export default function LandingPage() {
             { icon: "cash", title: "Cash on Delivery", body: "Pay in cash when your order reaches your door. No card needed." },
             { icon: "truck", title: "Fast nationwide delivery", body: "2–7 days to every city in Pakistan, tracked the whole way." },
             { icon: "shield", title: "Genuine accessories", body: "Sourced from real brands — never counterfeit, always tested." },
-            { icon: "refresh", title: "7-day easy replacement", body: "Not the right fit? Swap it within a week, no questions." },
           ].map((f, i) => (
             <Reveal className="feature-block glass" index={i} key={f.title}>
               <div className="feature-icon" aria-hidden="true">
-                <Icon name={f.icon as "cash" | "truck" | "shield" | "refresh"} size={22} />
+                <Icon name={f.icon as "cash" | "truck" | "shield"} size={22} />
               </div>
               <h3 className="feature-title">{f.title}</h3>
               <p className="feature-body">{f.body}</p>
