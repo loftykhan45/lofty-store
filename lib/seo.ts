@@ -28,7 +28,7 @@ export function productTitle(p: Product): string {
 export function productDescription(p: Product): string {
   return `Buy ${p.name} in Pakistan for ${money(
     p.price
-  )}. Cash on Delivery nationwide, genuine ${p.cat.toLowerCase()} accessories, 7-day easy replacement. Order online or on WhatsApp.`;
+  )}. Cash on Delivery nationwide, genuine ${p.cat.toLowerCase()} accessories. Order online or on WhatsApp.`;
 }
 
 /**
@@ -81,15 +81,10 @@ export function productJsonLd(p: Product) {
           },
         },
       },
-      hasMerchantReturnPolicy: {
-        "@type": "MerchantReturnPolicy",
-        applicableCountry: COUNTRY,
-        returnPolicyCategory:
-          "https://schema.org/MerchantReturnFiniteReturnWindow",
-        merchantReturnDays: 7,
-        returnMethod: "https://schema.org/ReturnByMail",
-        returnFees: "https://schema.org/FreeReturn",
-      },
+      // No hasMerchantReturnPolicy: the store does not offer a replacement
+      // window. Declaring one here would be a machine-readable promise Google
+      // can surface in Shopping, so it is omitted rather than asserted. If a
+      // real policy is introduced, add it back and make the on-page copy match.
     },
   };
 }
