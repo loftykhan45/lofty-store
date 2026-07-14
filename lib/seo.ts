@@ -41,7 +41,10 @@ export function productDescription(p: Product): string {
  * not claim ratings or GTINs we don't have, because false schema is a trust
  * violation and can get a merchant account flagged.
  */
-export function productJsonLd(p: Product) {
+export function productJsonLd(
+  p: Product,
+  rating?: { count: number; average: number } | null
+) {
   return {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -51,6 +54,19 @@ export function productJsonLd(p: Product) {
     sku: p.id,
     category: p.cat,
     brand: { "@type": "Brand", name: brandOf(p) },
+    // Emitted only when real reviews exist. An invented aggregateRating is the
+    // fastest way to get a merchant account flagged, and it is a lie to buyers.
+    ...(rating
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: rating.average,
+            reviewCount: rating.count,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }
+      : {}),
     offers: {
       "@type": "Offer",
       url: productUrl(p),
