@@ -349,12 +349,12 @@ a { color: inherit; }
 .hero-actions .pill { padding: 15px 30px; font-size: 16px; }
 .hero-image {
   position: relative;
-  aspect-ratio: 489 / 470;
-  width: 100%; max-width: 430px; margin: 0 auto;
+  aspect-ratio: 1 / 1;
+  width: 100%; max-width: 460px; margin: 0 auto;
   border-radius: 26px;
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
-  background: #e9e9ec;
+  background: transparent;
 }
 .swatch-label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: rgba(255, 255, 255, 0.68); }
 
