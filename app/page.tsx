@@ -8,6 +8,7 @@ import MediaFill from "@/components/MediaFill";
 import Icon from "@/components/Icon";
 import Reveal from "@/components/Reveal";
 import StatRow from "@/components/StatRow";
+import HeroVideo from "@/components/HeroVideo";
 
 const MAX_SUGGESTIONS = 6;
 
@@ -145,7 +146,10 @@ export default function LandingPage() {
 
   return (
     <>
-      <section className="hero-section">
+      <div className="hero-stage">
+        <HeroVideo />
+        <div className="hero-scrim" aria-hidden="true" />
+        <section className="hero-section">
         <div className="hero glass">
           <div>
             <div className="hero-eyebrow">Mobile accessories, refined</div>
@@ -165,7 +169,8 @@ export default function LandingPage() {
             <MediaFill image="/img/hero-17pro.png" label="iPhone 17 Pro and 17 Pro Max" sizes="(max-width: 900px) 100vw, 460px" fit="contain" />
           </div>
         </div>
-      </section>
+        </section>
+      </div>
 
       <StatRow />
 
