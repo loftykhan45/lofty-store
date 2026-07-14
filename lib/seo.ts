@@ -1,4 +1,5 @@
 import { Product, money } from "@/lib/products";
+import { CATEGORY_PAGES } from "@/lib/categories";
 
 // Canonical origin for the site. Search engines need absolute URLs in the
 // sitemap, canonical tags and structured data — relative ones are ignored.
@@ -119,6 +120,12 @@ export function brandOf(p: Product): string {
   return hit ?? SITE_NAME;
 }
 
+/** The category landing page a product belongs to, or the homepage as a fallback. */
+export function categoryUrlFor(p: Product): string {
+  const page = CATEGORY_PAGES.find((c) => c.cat === p.cat);
+  return page ? `${SITE_URL}/category/${page.slug}` : SITE_URL;
+}
+
 export function breadcrumbJsonLd(p: Product) {
   return {
     "@context": "https://schema.org",
@@ -129,7 +136,9 @@ export function breadcrumbJsonLd(p: Product) {
         "@type": "ListItem",
         position: 2,
         name: p.cat,
-        item: `${SITE_URL}/#products`,
+        // Points at the real category page, not a homepage anchor — an anchor
+        // is the same URL to a crawler, so it passed no authority anywhere.
+        item: categoryUrlFor(p),
       },
       { "@type": "ListItem", position: 3, name: p.name, item: productUrl(p) },
     ],
