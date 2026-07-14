@@ -10,8 +10,11 @@
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.78);
   --text-muted: rgba(255, 255, 255, 0.48);
-  --accent-gradient: linear-gradient(135deg, #3b7dfa, #1f4fc4);
-  --accent-text: #ffffff;
+  --accent-gradient: linear-gradient(135deg, #d4af37, #b8860b);
+  /* Ink on gold, not white: white on #b8860b is ~2.3:1 and fails AA. */
+  --accent-text: #1a1205;
+  /* Gold as a foreground colour, for icons/rules sitting on the dark glass. */
+  --accent-solid: #d4af37;
   /* One knob for the content column, so every section widens together on
      large monitors instead of stranding ~370px of dead margin either side. */
   --shell: 1180px;
@@ -49,7 +52,7 @@ a { color: inherit; }
    this dark glass UI. :focus-visible keeps it keyboard-only, so mouse clicks
    don't leave a ring behind. */
 :focus-visible {
-  outline: 2px solid #7fb0ff;
+  outline: 2px solid #f0cf6a;
   outline-offset: 3px;
   border-radius: 6px;
 }
@@ -195,7 +198,7 @@ a { color: inherit; }
 .pill-secondary { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: var(--text-primary); }
 @media (hover: hover) {
   .pill:hover { transform: translateY(-2px); }
-  .pill-primary:hover { box-shadow: 0 6px 20px rgba(59, 125, 250, 0.45); }
+  .pill-primary:hover { box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); }
   .pill-secondary:hover { background: rgba(255, 255, 255, 0.14); }
 }
 .pill:active { transform: translateY(0); }
@@ -467,7 +470,7 @@ a { color: inherit; }
   display: flex; align-items: center; gap: 10px;
   color: rgba(255, 255, 255, 0.78); font-size: 14px;
 }
-.pdp-facts svg { flex: none; color: var(--accent-text); opacity: 0.9; }
+.pdp-facts svg { flex: none; color: var(--accent-solid); opacity: 0.9; }
 
 .pdp-specs {
   display: flex; flex-direction: column; gap: 0;
@@ -567,7 +570,7 @@ a { color: inherit; }
 .testimonial-avatar {
   width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: var(--accent-gradient); color: #fff; font-size: 13px; font-weight: 700;
+  background: var(--accent-gradient); color: var(--accent-text); font-size: 13px; font-weight: 700;
 }
 .testimonial-name { color: #fff; font-size: 13.5px; font-weight: 600; }
 .testimonial-verified { color: rgba(255, 255, 255, 0.62); font-size: 11.5px; margin-top: 1px; }
