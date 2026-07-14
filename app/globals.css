@@ -353,6 +353,41 @@ a { color: inherit; }
 .floating-cart-btn .cart-badge { top: -4px; right: -4px; }
 
 /* hero */
+
+/* Full-bleed stage holding the background video, its scrim, and the hero card.
+   The poster is also the stage's own background image, so when the video is
+   withheld (slow connection / save-data / reduced motion) the section still
+   reads as designed rather than falling back to flat black. */
+.hero-stage {
+  position: relative;
+  overflow: hidden;
+  background-image: url("/img/hero-video-poster.jpg");
+  background-size: cover;
+  background-position: center;
+}
+.hero-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+/* Without this the white headline sits directly on moving gold particles and
+   its contrast swings with the footage. The scrim pins the backdrop dark so
+   the text stays legible on every frame. */
+.hero-scrim {
+  position: absolute; inset: 0;
+  z-index: 1;
+  /* Tuned against a measured contrast check: heavy enough that the white
+     headline clears AA on every frame, light enough that the gold particles
+     are still actually visible — the first pass was so dark the video may as
+     well not have been there. Darkest at the bottom, where it hands off to the
+     page background. */
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(5, 5, 7, 0.1) 0%, rgba(5, 5, 7, 0.55) 75%),
+    linear-gradient(180deg, rgba(5, 5, 7, 0.15) 0%, rgba(5, 5, 7, 0.5) 55%, rgba(5, 5, 7, 0.92) 100%);
+}
+.hero-stage > .hero-section { position: relative; z-index: 2; }
+
 .hero-section { max-width: var(--shell); margin: 0 auto; padding: 56px 28px 64px; }
 .hero {
   padding: 48px; border-radius: 36px;
